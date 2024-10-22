@@ -1,0 +1,23 @@
+{
+  "name": "tenisclubcomercio-proyectofinal",
+  "version": "1.0.0",
+  "description": "Proyecto Final - Tenis Club de Comercio",
+  "main": "./src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch ./src/index.js"
+  },
+  "keywords": [],
+  "author": "Ángel Martín Egea",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "mongoose": "^8.7.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "standard": "^17.1.2"
+  }
+}
