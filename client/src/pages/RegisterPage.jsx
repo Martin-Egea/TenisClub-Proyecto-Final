@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
-import { registroDeUsuario } from "../api/user.api.js";
+import { useUser } from "../context/UserContext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const {
@@ -7,10 +9,17 @@ const RegisterPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { signUp, isAuthenticated, errors: userErrors } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
   const onSubmit = async (data) => {
-    const res = await registroDeUsuario(data);
-    console.log(res);
+    signUp(data);
   };
 
   return (
@@ -19,7 +28,7 @@ const RegisterPage = () => {
         Registro de Usuario
       </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-1">
         {/* Nombre */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
@@ -196,10 +205,18 @@ const RegisterPage = () => {
         <div className="text-center">
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700"
+            className="w-full bg-indigo-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-indigo-700"
           >
             Registrar
           </button>
+        </div>
+
+        <div className="text-center text-sm text-gray-500 py-2">
+          {userErrors.map((error, i) => (
+            <div className="bg-red-500 p-2 text-white " key={i}>
+              {error}
+            </div>
+          ))}
         </div>
       </form>
     </div>

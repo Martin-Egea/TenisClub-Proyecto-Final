@@ -26,6 +26,9 @@ export const register = async (req, res) => {
   } = req.body;
 
   try {
+    const userFound = await User.findOne({ email });
+    if (userFound) return res.status(400).json(["El email ya esta registrado"]);
+
     const hashedPass = bcrypt.hashSync(password, 8);
 
     const newUser = new User({
@@ -43,7 +46,11 @@ export const register = async (req, res) => {
     const token = await createAccessToken({ id: userSaved._id });
 
     res.cookie("token", token);
-    res.status(200).json({ message: "Usuario creado exitosamente" });
+    res.json({
+      id: userSaved._id,
+      nombre: userSaved.nombre,
+      email: userSaved.email,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
