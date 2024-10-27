@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
-import { createContext, useState, useContext } from "react";
-import { registroDeUsuario } from "../api/user.api";
+import { createContext, useState, useContext, useEffect } from "react";
+import { registroDeUsuario, loginDeUsuario } from "../api/user.api";
 
 export const UserContext = createContext();
 
@@ -29,10 +29,32 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const signIn = async (user) => {
+    try {
+      const res = await loginDeUsuario(user);
+      console.log(res);
+      setIsAuthenticated(true);
+    } catch (error) {
+      setErrors(error.response.data);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      const timer = setTimeout(() => {
+        setErrors([]);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [errors]);
+
   return (
     <UserContext.Provider
       value={{
         signUp,
+        signIn,
         user,
         isAuthenticated,
         errors,
