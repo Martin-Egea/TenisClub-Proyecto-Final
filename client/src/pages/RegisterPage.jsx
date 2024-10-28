@@ -208,7 +208,7 @@ const RegisterPage = () => {
           </div>
 
           {/* Botón de enviar */}
-          <div className="text-center">
+          <div className="text-center ">
             <button
               type="submit"
               className="w-full bg-indigo-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-indigo-700"
@@ -217,7 +217,7 @@ const RegisterPage = () => {
             </button>
           </div>
           {/* Navegación a la pantalla de login */}
-          <div className="grid grid-cols-1 gap-1">
+          <div className="text-center mt-3">
             <Link to="/login" className="hover:text-indigo-500">
               Iniciar sesión
             </Link>

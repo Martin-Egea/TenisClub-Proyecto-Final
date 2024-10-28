@@ -86,7 +86,7 @@ export default function LoginPage() {
           {/* navegacion a la pagina de register o recuperar contraseña */}
           <div className="grid grid-cols-1 gap-1">
             <Link to="/register" className="hover:text-indigo-500">
-              Register
+              Registrarse
             </Link>
             <Link to="/" className="hover:text-indigo-500">
               Recuperar Contraseña
