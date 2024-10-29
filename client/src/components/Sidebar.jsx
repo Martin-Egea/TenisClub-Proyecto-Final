@@ -68,7 +68,7 @@ export function SidebarItem({ icon, text, active, alert, onClick }) {
           transition-colors group
           ${
             active
-              ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+              ? "bg-gradient-to-tr from-orange-200 to-orange-100 text-orange-700"
               : "hover:bg-indigo-50 text-gray-600"
           }
       `}
@@ -83,7 +83,7 @@ export function SidebarItem({ icon, text, active, alert, onClick }) {
       </span>
       {alert && (
         <div
-          className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${
+          className={`absolute right-2 w-2 h-2 rounded bg-orange-400 ${
             expanded ? "" : "top-2"
           }`}
         />
@@ -93,7 +93,7 @@ export function SidebarItem({ icon, text, active, alert, onClick }) {
         <div
           className={`
             absolute left-full rounded-md px-2 py-1 ml-6
-            bg-indigo-100 text-indigo-800 text-sm
+            bg-orange-100 text-orange-800 text-sm
             invisible opacity-20 -translate-x-3 transition-all
             group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
         `}

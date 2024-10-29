@@ -1,6 +1,7 @@
 import User from "../models/user.schema.js";
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
+import jwt from "jsonwebtoken";
 
 //Obtener todos los usuarios
 export const allUsers = async (req, res) => {
@@ -108,5 +109,31 @@ export const profile = async (req, res) => {
     email: userFound.email,
     rol_usuario: userFound.rol_usuario,
     socio_activo: userFound.socio_activo,
+  });
+};
+
+export const verifyToken = async (req, res) => {
+  const { token } = req.cookies;
+
+  if (!token) return res.status(401).json({ message: "No autorizado" });
+
+  jwt.verify(token, process.env.JWT_KEY, async (err, decoded) => {
+    if (err) return res.status(401).json({ message: "No autorizado" });
+
+    const userFound = await User.findById(decoded.id);
+    if (!userFound) return res.status(401).json({ message: "No autorizado" });
+
+    return res.json({
+      id: userFound._id,
+      nombre: userFound.nombre,
+      apellido: userFound.apellido,
+      fecha_nacimiento: userFound.fecha_nacimiento,
+      domicilio: userFound.domicilio,
+      localidad: userFound.localidad,
+      telefono: userFound.telefono,
+      email: userFound.email,
+      rol_usuario: userFound.rol_usuario,
+      socio_activo: userFound.socio_activo,
+    });
   });
 };

@@ -211,14 +211,14 @@ const RegisterPage = () => {
           <div className="text-center ">
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-indigo-700"
+              className="w-full bg-orange-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-orange-700"
             >
               Registrar
             </button>
           </div>
           {/* Navegación a la pantalla de login */}
           <div className="text-center mt-3">
-            <Link to="/login" className="hover:text-indigo-500">
+            <Link to="/login" className="hover:text-orange-500">
               Iniciar sesión
             </Link>
           </div>

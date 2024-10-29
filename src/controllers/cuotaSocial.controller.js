@@ -36,10 +36,10 @@ export const eliminarCuotaSocial = async (req, res) => {
 
 export const actualizarCuotaSocial = async (req, res) => {
   const id = req.params.id;
-  const { importe, mes, socio } = req.body;
+  const { importe, mes, socio, revisado } = req.body;
   const cuotaSocial = await CuotaSocial.findByIdAndUpdate(
     id,
-    { importe, mes, socio },
+    { importe, mes, socio, revisado },
     { new: true }
   );
 

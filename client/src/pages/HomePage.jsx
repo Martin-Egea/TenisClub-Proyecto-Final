@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { Sidebar, SidebarItem } from "../components/Sidebar";
+import { Payment } from "../components/Payment";
 import {
   LifeBuoy,
   Receipt,
   UserCircle,
   BarChart3,
+  Trophy,
   LayoutDashboard,
   Settings,
 } from "lucide-react";
+import CuotaSocios from "../components/CuotaSocios";
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("Principal");
@@ -33,9 +36,15 @@ export default function HomePage() {
         />
         <SidebarItem
           icon={<BarChart3 size={20} />}
-          text="Estadisticas"
-          active={activeItem === "Estadisticas"}
-          onClick={() => handleItemClick("Estadisticas")}
+          text="Historial"
+          active={activeItem === "Historial"}
+          onClick={() => handleItemClick("Historial")}
+        />
+        <SidebarItem
+          icon={<Trophy size={20} />}
+          text="Torneos"
+          active={activeItem === "Torneos"}
+          onClick={() => handleItemClick("Torneos")}
         />
         <SidebarItem
           icon={<Receipt size={20} />}
@@ -48,9 +57,10 @@ export default function HomePage() {
         <SidebarItem icon={<LifeBuoy size={20} />} text="Contacto" />
       </Sidebar>
 
-      <div className=" h-screen bg-gray-100">
-        <h1>/HomePage</h1>
-      </div>
+      {/* visualización de elementos de navegacion */}
+      <Payment active={activeItem === "Pagos"} />
+      {/* Lista de cuotas sociales */}
+      <CuotaSocios active={activeItem === "Pagos"} />
     </main>
   );
 }

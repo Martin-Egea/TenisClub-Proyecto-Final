@@ -7,6 +7,7 @@ const CuotaSocialSchema = new Schema(
     socio: { type: Schema.Types.ObjectId, ref: "user", required: true },
     importe: { type: Number, required: true },
     mes: { type: Number, required: true },
+    revisado: { type: Boolean, default: false },
   },
   {
     timestamps: true,

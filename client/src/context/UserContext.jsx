@@ -1,7 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
 import { createContext, useState, useContext, useEffect } from "react";
-import { registroDeUsuario, loginDeUsuario } from "../api/user.api";
+import {
+  registroDeUsuario,
+  loginDeUsuario,
+  verifyUserToken,
+} from "../api/user.api";
+import Cookies from "js-cookie";
 
 export const UserContext = createContext();
 
@@ -16,6 +21,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const signUp = async (user) => {
     try {
@@ -34,6 +40,7 @@ export const UserProvider = ({ children }) => {
       const res = await loginDeUsuario(user);
       console.log(res);
       setIsAuthenticated(true);
+      setUser(res.data);
     } catch (error) {
       setErrors(error.response.data);
       console.log(error);
@@ -50,11 +57,43 @@ export const UserProvider = ({ children }) => {
     }
   }, [errors]);
 
+  useEffect(() => {
+    async function checkLogin() {
+      const cookies = Cookies.get();
+
+      // comprobar si hay token
+      if (!cookies.token) {
+        setIsAuthenticated(false);
+        setLoading(false);
+        return setUser(null);
+      }
+
+      // comprobar si el token es válido
+      try {
+        // comprobar si el token es válido en el Backend!
+        const res = await verifyUserToken(cookies.token);
+
+        if (!res.data) return setIsAuthenticated(false);
+
+        // si el token es válido
+        setIsAuthenticated(true);
+        setUser(res.data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsAuthenticated(false);
+        setLoading(false);
+      }
+    }
+    checkLogin();
+  }, []);
+
   return (
     <UserContext.Provider
       value={{
         signUp,
         signIn,
+        loading,
         user,
         isAuthenticated,
         errors,

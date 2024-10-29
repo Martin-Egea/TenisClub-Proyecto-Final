@@ -78,17 +78,17 @@ export default function LoginPage() {
           <div className="text-center pb-3">
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-indigo-700"
+              className="w-full bg-orange-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-orange-700"
             >
               Iniciar Sesión
             </button>
           </div>
           {/* navegacion a la pagina de register o recuperar contraseña */}
           <div className="grid grid-cols-1 gap-1">
-            <Link to="/register" className="hover:text-indigo-500">
+            <Link to="/register" className="hover:text-orange-500">
               Registrarse
             </Link>
-            <Link to="/" className="hover:text-indigo-500">
+            <Link to="/" className="hover:text-orange-500">
               Recuperar Contraseña
             </Link>
           </div>
