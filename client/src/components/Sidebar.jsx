@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
+import { useUser } from "../context/UserContext.jsx";
 
 const SidebarContext = createContext();
 
 export function Sidebar({ children }) {
   const [expanded, setExpanded] = useState(true);
+  const { user } = useUser();
 
   return (
     <aside className="h-screen w-max block float-left mr-4">
@@ -43,8 +45,12 @@ export function Sidebar({ children }) {
           `}
           >
             <div className="leading-4">
-              <h4 className="font-semibold">John Doe</h4>
-              <span className="text-xs text-gray-600">johndoe@gmail.com</span>
+              <h4 className="font-semibold">
+                {user ? user.nombre : "John Doe"}
+              </h4>
+              <span className="text-xs text-gray-600">
+                {user ? user.email : "John Doe"}
+              </span>
             </div>
             <button className="rounded-lg bg-gray-50 hover:bg-gray-100">
               <MoreVertical size={20} />

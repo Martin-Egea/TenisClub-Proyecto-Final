@@ -115,7 +115,7 @@ export function Payment({ active }) {
             <div className="text-center pb-3">
               <button
                 type="submit"
-                className="w-5/12 bg-orange-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-orange-700"
+                className="w-5/12 font-bold bg-orange-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-orange-700"
               >
                 Informar Pago
               </button>

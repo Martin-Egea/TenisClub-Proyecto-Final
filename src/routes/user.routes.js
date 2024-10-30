@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  allUsers,
   login,
   logout,
   profile,
@@ -15,6 +16,7 @@ const router = Router();
 router.post("/register", validateSchema(registerSchema), register);
 router.post("/login", validateSchema(loginSchema), login);
 router.post("/logout", logout);
+router.get("/users", allUsers);
 
 router.get("/verify", verifyToken);
 

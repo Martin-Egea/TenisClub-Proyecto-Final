@@ -6,10 +6,10 @@ import jwt from "jsonwebtoken";
 //Obtener todos los usuarios
 export const allUsers = async (req, res) => {
   try {
-    const result = await findAll();
+    const result = await User.find();
     res.status(200).json(result);
   } catch (error) {
-    res.status(400).json();
+    res.status(500).json(error);
   }
 };
 

@@ -11,6 +11,7 @@ import {
   Settings,
 } from "lucide-react";
 import CuotaSocios from "../components/CuotaSocios";
+import TablaSocios from "../components/TablaSocios";
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("Principal");
@@ -36,9 +37,9 @@ export default function HomePage() {
         />
         <SidebarItem
           icon={<BarChart3 size={20} />}
-          text="Historial"
-          active={activeItem === "Historial"}
-          onClick={() => handleItemClick("Historial")}
+          text="Recaudación"
+          active={activeItem === "Recaudación"}
+          onClick={() => handleItemClick("Recaudación")}
         />
         <SidebarItem
           icon={<Trophy size={20} />}
@@ -59,8 +60,9 @@ export default function HomePage() {
 
       {/* visualización de elementos de navegacion */}
       <Payment active={activeItem === "Pagos"} />
-      {/* Lista de cuotas sociales */}
       <CuotaSocios active={activeItem === "Pagos"} />
+
+      <TablaSocios active={activeItem === "Socios"} />
     </main>
   );
 }

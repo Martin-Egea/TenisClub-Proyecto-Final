@@ -78,7 +78,7 @@ export default function LoginPage() {
           <div className="text-center pb-3">
             <button
               type="submit"
-              className="w-full bg-orange-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-orange-700"
+              className="w-full font-bold bg-orange-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-orange-700"
             >
               Iniciar Sesión
             </button>
