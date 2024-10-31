@@ -7,7 +7,7 @@ const SidebarContext = createContext();
 
 export function Sidebar({ children }) {
   const [expanded, setExpanded] = useState(true);
-  const { user } = useUser();
+  const { user, logout } = useUser();
 
   return (
     <aside className="h-screen w-max block float-left mr-4">
@@ -52,7 +52,10 @@ export function Sidebar({ children }) {
                 {user ? user.email : "John Doe"}
               </span>
             </div>
-            <button className="rounded-lg bg-gray-50 hover:bg-gray-100">
+            <button
+              onClick={logout}
+              className="rounded-lg bg-gray-50 hover:bg-gray-100"
+            >
               <MoreVertical size={20} />
             </button>
           </div>

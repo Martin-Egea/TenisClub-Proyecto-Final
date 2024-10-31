@@ -1,7 +1,10 @@
 import CuotaSocial from "../models/cuotaSocial.schema.js";
 
 export const obtenerCuotasSociales = async (req, res) => {
-  const cuotasSociales = await CuotaSocial.find();
+  const cuotasSociales = await CuotaSocial.find().populate({
+    path: "socio",
+    select: "nombre apellido",
+  });
   res.json(cuotasSociales);
 };
 

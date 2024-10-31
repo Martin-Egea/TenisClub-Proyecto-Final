@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
+import { useUser } from "../context/UserContext";
 
 export function Payment({ active }) {
   const {
@@ -7,9 +8,10 @@ export function Payment({ active }) {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { crearInformePago } = useUser();
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
+  const onSubmit = handleSubmit(async (data) => {
+    await crearInformePago(data);
   });
 
   return (

@@ -1,10 +1,10 @@
 import z from "zod";
 
 export const crearCuotaSocialSchema = z.object({
-  importe: z.number({
+  importe: z.string({
     required_error: "El importe es obligatorio",
   }),
-  mes: z.number({
+  mes: z.string({
     required_error: "El mes es obligatorio",
   }),
 });

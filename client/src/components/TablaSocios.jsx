@@ -16,10 +16,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useUser } from "../context/UserContext";
 import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { useUser } from "../context/UserContext";
 
 export default function TablaSocios({ active }) {
   const [usuarios, setUsuarios] = useState([]);
@@ -52,12 +52,15 @@ export default function TablaSocios({ active }) {
         usuario.email.toLowerCase().includes(busqueda.toLowerCase())
     );
     setUsuariosFiltrados(resultadosFiltrados);
-  }, [busqueda, usuarios]);
+  }, [busqueda, usuarios, allUsers]);
 
   const cargarCuotasUsuario = async (userId) => {
     try {
-      // carga de cuotas para un usuario específico
-      const cuotas = cuotasSociales.filter((cuota) => cuota.socio === userId);
+      // carga de cuotas revisadas para un usuario específico
+      const cuotas = cuotasSociales.filter(
+        (cuota) => cuota.socio._id === userId && cuota.revisado === true
+      );
+
       setCuotasUsuario(cuotas);
     } catch (error) {
       console.error("Error al cargar cuotas:", error);
@@ -162,7 +165,7 @@ export default function TablaSocios({ active }) {
               {cuotasUsuario.map((cuota) => (
                 <TableRow key={cuota._id}>
                   <TableCell>{cuota.mes}</TableCell>
-                  <TableCell>${cuota.importe.toFixed(2)}</TableCell>
+                  <TableCell>${cuota.importe}</TableCell>
                   <TableCell>
                     {new Date(cuota.createdAt).toLocaleDateString()}
                   </TableCell>
@@ -172,7 +175,7 @@ export default function TablaSocios({ active }) {
           </Table>
           <Button
             onClick={() => setDialogoAbierto(false)}
-            className=" font-bold bg-orange-600 text-white mt-4 rounded-md hover:bg-orange-700"
+            className=" font-bold bg-orange-600 text-white mt-4 rounded-md hover:bg-orange-700 outline-none "
           >
             Cerrar
           </Button>

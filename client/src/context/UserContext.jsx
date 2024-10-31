@@ -7,7 +7,11 @@ import {
   verifyUserToken,
   obtenerUsuarios,
 } from "../api/user.api";
-import { obtenerCuotasSociales } from "../api/cuotaSocial.api.js";
+import {
+  obtenerCuotasSociales,
+  crearCuotaSocial,
+  eliminarCuotaSocial,
+} from "../api/cuotaSocial.api.js";
 import Cookies from "js-cookie";
 
 export const UserContext = createContext();
@@ -50,6 +54,13 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const logout = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+    Cookies.remove("token");
+  };
+
+  //obtener todos los usuarios
   const getAllUsers = async () => {
     try {
       const res = await obtenerUsuarios();
@@ -59,6 +70,7 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  //obtener todas las cuotas sociales
   const getAllCuotasSociales = async () => {
     try {
       const res = await obtenerCuotasSociales();
@@ -68,6 +80,18 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  //crear una cuosa social nueva!!!!
+  const crearInformePago = async (pago) => {
+    const res = await crearCuotaSocial(pago);
+    console.log(res);
+  };
+
+  //eliminar una cuota social
+  const deleteCuotaSocial = async (id) => {
+    await eliminarCuotaSocial(id);
+  };
+
+  //limpiar los errores de validación
   useEffect(() => {
     if (errors.length > 0) {
       const timer = setTimeout(() => {
@@ -78,6 +102,7 @@ export const UserProvider = ({ children }) => {
     }
   }, [errors]);
 
+  // comprobar si el usuario está logueado
   useEffect(() => {
     async function checkLogin() {
       const cookies = Cookies.get();
@@ -116,12 +141,17 @@ export const UserProvider = ({ children }) => {
       value={{
         signUp,
         signIn,
+        logout,
+        crearInformePago,
         loading,
         user,
         isAuthenticated,
         errors,
         allUsers,
         cuotasSociales,
+        setCuotasSociales,
+        getAllCuotasSociales,
+        deleteCuotaSocial,
       }}
     >
       {children}
