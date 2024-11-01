@@ -16,7 +16,7 @@ export function Payment({ active }) {
 
   return (
     <div
-      className={`flex justify-center items-center 
+      className={`flex justify-center items-center animate-fade-left 
     ${active ? "" : "hidden"} `}
     >
       <div className=" flex justify-center ">

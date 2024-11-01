@@ -13,6 +13,7 @@ import {
 import CuotaSocios from "../components/CuotaSocios";
 import TablaSocios from "../components/TablaSocios";
 import TablaRevisionPagos from "../components/TablaRevisionPagos";
+//import { GraficoRecaudacion } from "../components/GraficoRecaudacion";
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("Novedades");
@@ -22,7 +23,7 @@ export default function HomePage() {
   };
 
   return (
-    <main>
+    <main className="bg-gradient-to-br from-orange-950 via-amber-500 to-orange-950 h-screen overflow-hidden">
       <Sidebar>
         <SidebarItem
           icon={<LayoutDashboard size={20} />}
@@ -68,6 +69,7 @@ export default function HomePage() {
       <TablaSocios active={activeItem === "Socios"} />
 
       <TablaRevisionPagos active={activeItem === "Recaudación"} />
+      {/* <GraficoRecaudacion active={activeItem === "Recaudación"} /> */}
     </main>
   );
 }

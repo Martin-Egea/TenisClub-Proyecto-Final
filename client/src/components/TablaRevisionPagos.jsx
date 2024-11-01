@@ -50,7 +50,7 @@ export default function TablaRevisionPagos({ active }) {
 
   return (
     <div
-      className={`flex justify-center items-center
+      className={`flex justify-center items-center animate-fade-left
         ${active ? "" : "hidden"} `}
     >
       <Card className="shadow-xl mt-3">

@@ -5,7 +5,7 @@ export function CuotaSocios({ active }) {
       className={`flex justify-center items-center 
     ${active ? "" : "hidden"} `}
     >
-      Cuota Socios
+      Lista de cuotas pagadas
     </div>
   );
 }

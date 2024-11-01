@@ -75,7 +75,7 @@ export default function TablaSocios({ active }) {
 
   return (
     <div
-      className={`flex justify-center items-center mx-auto p-4
+      className={`flex justify-center items-center mx-auto p-4 animate-fade-left
         ${active ? "" : "hidden"} `}
     >
       <Card className="shadow-2xl">
@@ -123,7 +123,7 @@ export default function TablaSocios({ active }) {
                 <TableRow
                   key={usuario._id}
                   onClick={() => handleRowClick(usuario)}
-                  className="cursor-pointer hover:bg-gray-100"
+                  className="cursor-pointer hover:bg-gray-100 "
                 >
                   <TableCell>{usuario.nombre}</TableCell>
                   <TableCell>{usuario.apellido}</TableCell>
@@ -139,7 +139,7 @@ export default function TablaSocios({ active }) {
       </Card>
 
       <Dialog open={dialogoAbierto} onOpenChange={setDialogoAbierto}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] animate-fade">
           <DialogHeader>
             <DialogTitle>
               Cuotas de: {usuarioSeleccionado?.nombre}{" "}
@@ -175,7 +175,7 @@ export default function TablaSocios({ active }) {
           </Table>
           <Button
             onClick={() => setDialogoAbierto(false)}
-            className=" font-bold bg-orange-600 text-white mt-4 rounded-md hover:bg-orange-700 outline-none "
+            className=" bg-orange-600 text-white mt-4 rounded-md hover:bg-orange-700 outline-none "
           >
             Cerrar
           </Button>

@@ -26,8 +26,8 @@ export default function LoginPage() {
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="bg-gray-600 flex justify-center items-center h-screen ">
-      <div className="max-w-md mx-auto bg-white my-3 p-6 shadow-2xl rounded-lg min-w-[300px]">
+    <div className="bg-gradient-to-br from-orange-950 via-amber-500 to-orange-950 flex justify-center items-center h-screen ">
+      <div className="max-w-md mx-auto bg-white my-3 p-6 shadow-2xl rounded-lg min-w-[300px] animate-fade">
         <h2 className="text-xl font-bold mb-6 text-center">Login de Usuario</h2>
 
         <form onSubmit={onSubmit} className="space-y-1 ">
