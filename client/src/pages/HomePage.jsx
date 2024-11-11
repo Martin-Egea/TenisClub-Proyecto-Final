@@ -6,14 +6,13 @@ import {
   Receipt,
   UserCircle,
   BarChart3,
-  Trophy,
   LayoutDashboard,
   Settings,
 } from "lucide-react";
 import CuotaSocios from "../components/CuotaSocios";
 import TablaSocios from "../components/TablaSocios";
 import TablaRevisionPagos from "../components/TablaRevisionPagos";
-//import { GraficoRecaudacion } from "../components/GraficoRecaudacion";
+import GraficoRegistroSocios from "@/components/GraficoRegistroSocios";
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("Novedades");
@@ -23,7 +22,7 @@ export default function HomePage() {
   };
 
   return (
-    <main className="bg-gradient-to-br from-orange-950 via-amber-500 to-orange-950 h-screen overflow-hidden">
+    <main className="bg-gradient-to-br from-orange-950 via-amber-500 to-orange-950 h-screen overflow-y-auto overflow-x-hidden">
       <Sidebar>
         <SidebarItem
           icon={<LayoutDashboard size={20} />}
@@ -45,12 +44,6 @@ export default function HomePage() {
           alert
         />
         <SidebarItem
-          icon={<Trophy size={20} />}
-          text="Torneos"
-          active={activeItem === "Torneos"}
-          onClick={() => handleItemClick("Torneos")}
-        />
-        <SidebarItem
           icon={<Receipt size={20} />}
           text="Pagos"
           active={activeItem === "Pagos"}
@@ -68,8 +61,8 @@ export default function HomePage() {
 
       <TablaSocios active={activeItem === "Socios"} />
 
+      <GraficoRegistroSocios active={activeItem === "Recaudación"} />
       <TablaRevisionPagos active={activeItem === "Recaudación"} />
-      {/* <GraficoRecaudacion active={activeItem === "Recaudación"} /> */}
     </main>
   );
 }

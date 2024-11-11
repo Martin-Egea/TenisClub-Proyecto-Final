@@ -41,7 +41,7 @@ export default function TablaRevisionPagos({ active }) {
       }
     };
     cargarCuotasSociales();
-  }, [cuotasSociales, getAllCuotasSociales]);
+  }, [cuotasSociales]);
 
   const handleConfirmarRevision = async (id) => {
     await actualizarEstadoUsuario(id);

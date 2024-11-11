@@ -8,10 +8,11 @@ export function Payment({ active }) {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { crearInformePago } = useUser();
+  const { crearInformePago, getAllCuotasSociales } = useUser();
 
   const onSubmit = handleSubmit(async (data) => {
     await crearInformePago(data);
+    getAllCuotasSociales();
   });
 
   return (

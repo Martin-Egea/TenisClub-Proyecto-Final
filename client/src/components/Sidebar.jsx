@@ -10,7 +10,7 @@ export function Sidebar({ children }) {
   const { user, logout } = useUser();
 
   return (
-    <aside className="h-screen w-max block float-left mr-4 animate-fade-right">
+    <aside className="h-screen w-max float-left sticky top-0 mr-4 animate-fade-right">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm ">
         <div className="p-4 pb-2 flex justify-between items-center">
           <img

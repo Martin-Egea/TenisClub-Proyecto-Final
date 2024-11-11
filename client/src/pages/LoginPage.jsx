@@ -11,12 +11,20 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm();
 
-  const { signIn, errors: signInErrors, isAuthenticated } = useUser();
+  const {
+    signIn,
+    errors: signInErrors,
+    isAuthenticated,
+    getAllCuotasSociales,
+    getAllUsers,
+  } = useUser();
 
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit((data) => {
     signIn(data);
+    getAllCuotasSociales();
+    getAllUsers();
   });
 
   useEffect(() => {

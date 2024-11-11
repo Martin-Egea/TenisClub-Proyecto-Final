@@ -149,6 +149,7 @@ export const UserProvider = ({ children }) => {
         errors,
         allUsers,
         cuotasSociales,
+        getAllUsers,
         setCuotasSociales,
         getAllCuotasSociales,
         deleteCuotaSocial,
