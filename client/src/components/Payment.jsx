@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import { useUser } from "../context/UserContext";
+import { CreditCard } from "lucide-react";
 
 export function Payment({ active }) {
   const {
@@ -27,7 +28,7 @@ export function Payment({ active }) {
           </h2>
           <form onSubmit={onSubmit} className="space-y-1 ">
             <div className="grid grid-cols-2 gap-8">
-              <div>
+              <div className="flex flex-col h-full justify-between">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 min-w-56">
                     N° de cuenta:
@@ -112,6 +113,15 @@ export function Payment({ active }) {
                   src="https://www.partyplace.com.ar/image/0/0_0-qr%20sin%20costo%20mercado%20pago1.png"
                   alt="QR de Mercado Pago"
                 />
+                <a
+                  href="https://link.mercadopago.com.ar/tenisclubcomercio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 px-4 py-2 mt-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200"
+                >
+                  <CreditCard size={20} />
+                  <span>Link de Mercado Pago</span>
+                </a>
               </div>
             </div>
             {/* Botón de enviar */}

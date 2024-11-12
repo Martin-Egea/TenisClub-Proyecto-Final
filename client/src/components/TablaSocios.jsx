@@ -20,6 +20,7 @@ import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useUser } from "../context/UserContext";
+import { importeFormateado, mesFormateado } from "../utils/formatearDatos.js";
 
 export default function TablaSocios({ active }) {
   const [usuarios, setUsuarios] = useState([]);
@@ -127,10 +128,14 @@ export default function TablaSocios({ active }) {
                 >
                   <TableCell>{usuario.nombre}</TableCell>
                   <TableCell>{usuario.apellido}</TableCell>
-                  <TableCell>{usuario.email}</TableCell>
-                  <TableCell>{usuario.telefono}</TableCell>
+                  <TableCell className="text-left">{usuario.email}</TableCell>
+                  <TableCell className="text-right">
+                    {usuario.telefono}
+                  </TableCell>
                   <TableCell>{usuario.localidad}</TableCell>
-                  <TableCell>{usuario.socio_activo ? "Sí" : "No"}</TableCell>
+                  <TableCell className="text-center">
+                    {usuario.socio_activo ? "Sí" : "No"}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -152,11 +157,13 @@ export default function TablaSocios({ active }) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="font-bold text-orange-700">Mes</TableHead>
-                <TableHead className="font-bold text-orange-700">
+                <TableHead className="text-center font-bold text-orange-700">
+                  Mes
+                </TableHead>
+                <TableHead className="text-center font-bold text-orange-700">
                   Importe
                 </TableHead>
-                <TableHead className="font-bold text-orange-700">
+                <TableHead className="text-center font-bold text-orange-700">
                   Fecha de Pago
                 </TableHead>
               </TableRow>
@@ -164,9 +171,13 @@ export default function TablaSocios({ active }) {
             <TableBody>
               {cuotasUsuario.map((cuota) => (
                 <TableRow key={cuota._id}>
-                  <TableCell>{cuota.mes}</TableCell>
-                  <TableCell>${cuota.importe}</TableCell>
-                  <TableCell>
+                  <TableCell className="text-right">
+                    {mesFormateado(cuota.mes)}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    ${importeFormateado(cuota.importe)}
+                  </TableCell>
+                  <TableCell className="text-right">
                     {new Date(cuota.createdAt).toLocaleDateString()}
                   </TableCell>
                 </TableRow>

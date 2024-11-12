@@ -13,7 +13,10 @@ import { useUser } from "../context/UserContext";
 
 const formatearMes = (mes) => {
   const [year, month] = mes.split("-");
-  return new Date(year, month - 1).toLocaleString("es-ES", { month: "short" });
+  const mesFormateado = new Date(year, month - 1).toLocaleString("es-ES", {
+    month: "short",
+  });
+  return mesFormateado === "septiembre" ? "sept" : mesFormateado;
 };
 
 const mesesOrdenados = [
@@ -25,7 +28,7 @@ const mesesOrdenados = [
   "jun",
   "jul",
   "ago",
-  "sep",
+  "sept",
   "oct",
   "nov",
   "dic",

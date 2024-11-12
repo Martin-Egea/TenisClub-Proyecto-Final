@@ -16,6 +16,7 @@ import {
   actualizarCuotaSocial,
   obtenerCuotaSocialXid,
 } from "../api/cuotaSocial.api.js";
+import { importeFormateado } from "../utils/formatearDatos.js";
 
 async function actualizarEstadoUsuario(id) {
   const res = await obtenerCuotaSocialXid(id);
@@ -26,7 +27,6 @@ async function actualizarEstadoUsuario(id) {
 export default function TablaRevisionPagos({ active }) {
   // lo de abajo en realidad son cuotas a revisar XD!
   const [usuariosARevisar, setUsuariosARevisar] = useState([]);
-
   const { cuotasSociales, getAllCuotasSociales } = useUser();
 
   useEffect(() => {
@@ -50,10 +50,10 @@ export default function TablaRevisionPagos({ active }) {
 
   return (
     <div
-      className={`flex justify-center items-center animate-fade-left
+      className={`flex justify-center items-center animate-fade-up 
         ${active ? "" : "hidden"} `}
     >
-      <Card className="shadow-xl mt-3">
+      <Card className="shadow-xl mt-3 min-w-[500px]">
         <CardHeader>
           <CardTitle className="text-center text-xl">
             Lista de usuarios sin revisar
@@ -63,10 +63,10 @@ export default function TablaRevisionPagos({ active }) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Socio</TableHead>
-                <TableHead>Importe</TableHead>
-                <TableHead>Mes</TableHead>
-                <TableHead>Pago</TableHead>
+                <TableHead className="text-center">Socio</TableHead>
+                <TableHead className="text-center">Importe</TableHead>
+                <TableHead className="text-center">Mes</TableHead>
+                <TableHead className="text-center">Pago</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -75,7 +75,9 @@ export default function TablaRevisionPagos({ active }) {
                   <TableCell>
                     {usuario.socio.nombre + ", " + usuario.socio.apellido}
                   </TableCell>
-                  <TableCell>{usuario.importe}</TableCell>
+                  <TableCell className="text-right">
+                    ${importeFormateado(usuario.importe)}
+                  </TableCell>
                   <TableCell>{usuario.mes}</TableCell>
                   <TableCell>
                     <Button
