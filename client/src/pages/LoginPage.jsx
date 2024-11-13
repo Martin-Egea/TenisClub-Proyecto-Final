@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { useUser } from "../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 export default function LoginPage() {
   const {
@@ -17,6 +19,7 @@ export default function LoginPage() {
     isAuthenticated,
     getAllCuotasSociales,
     getAllUsers,
+    googleLoginOrRegister,
   } = useUser();
 
   const navigate = useNavigate();
@@ -92,13 +95,32 @@ export default function LoginPage() {
           </div>
 
           {/* Botón de enviar */}
-          <div className="text-center pb-3">
+          <div className="text-center pb-3 flex flex-col gap-2 items-center">
             <button
               type="submit"
               className="w-full font-bold bg-orange-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-orange-700"
             >
               Iniciar Sesión
             </button>
+            <h1>o</h1>
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                const decoded = jwtDecode(credentialResponse.credential);
+
+                const usuarioGoogle = {
+                  googleId: credentialResponse.clientId,
+                  email: decoded.email,
+                  nombre: decoded.given_name,
+                  apellido: decoded.family_name,
+                };
+                googleLoginOrRegister(usuarioGoogle);
+                getAllCuotasSociales();
+                getAllUsers();
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
           </div>
           {/* navegacion a la pagina de register o recuperar contraseña */}
           <div className="grid grid-cols-1 gap-1">

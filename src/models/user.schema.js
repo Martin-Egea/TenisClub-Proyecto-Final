@@ -4,12 +4,13 @@ const { Schema, models, model } = mongoose;
 
 const UserSchema = new Schema(
   {
+    googleId: { type: String, required: false },
     nombre: { type: String, required: true, trim: true },
     apellido: { type: String, required: true, trim: true },
-    fecha_nacimiento: { type: Date, required: true },
-    domicilio: { type: String, required: true, trim: true },
-    localidad: { type: String, required: true, trim: true },
-    telefono: { type: String, required: true },
+    fecha_nacimiento: { type: Date, required: false },
+    domicilio: { type: String, required: false, trim: true },
+    localidad: { type: String, required: false, trim: true },
+    telefono: { type: String, required: false },
     email: {
       type: String,
       required: true,
@@ -18,7 +19,7 @@ const UserSchema = new Schema(
       trim: true,
     },
     rol_usuario: { type: Number, default: 0 },
-    password: { type: String, required: true },
+    password: { type: String, required: false },
     socio_activo: { type: Boolean, default: false },
   },
   {

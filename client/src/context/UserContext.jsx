@@ -12,6 +12,7 @@ import {
   crearCuotaSocial,
   eliminarCuotaSocial,
 } from "../api/cuotaSocial.api.js";
+import { loginOrRegister } from "../api/googleAuth.api.js";
 import Cookies from "js-cookie";
 
 export const UserContext = createContext();
@@ -30,6 +31,17 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [allUsers, setAllUsers] = useState([]);
   const [cuotasSociales, setCuotasSociales] = useState([]);
+
+  const googleLoginOrRegister = async (user) => {
+    try {
+      const res = await loginOrRegister(user);
+      console.log(res.data);
+      setUser(res.data);
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const signUp = async (user) => {
     try {
@@ -139,6 +151,7 @@ export const UserProvider = ({ children }) => {
   return (
     <UserContext.Provider
       value={{
+        googleLoginOrRegister,
         signUp,
         signIn,
         logout,

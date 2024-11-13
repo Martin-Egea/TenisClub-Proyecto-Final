@@ -11,3 +11,12 @@ export function createAccessToken(payload) {
     });
   });
 }
+
+export function decodeToken(token) {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, SECRET_KEY, (err, decoded) => {
+      if (err) reject(err);
+      resolve(decoded);
+    });
+  });
+}
