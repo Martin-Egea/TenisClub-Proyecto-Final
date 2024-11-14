@@ -25,39 +25,43 @@ export default function HomePage() {
 
   return (
     <main className="bg-gradient-to-br from-orange-950 via-amber-500 to-orange-950 h-screen overflow-y-auto overflow-x-hidden">
-      <Sidebar>
-        <SidebarItem
-          icon={<LayoutDashboard size={20} />}
-          text="Novedades"
-          active={activeItem === "Novedades"}
-          onClick={() => handleItemClick("Novedades")}
-        />
-        {user.rol_usuario === 2 && (
+      <Sidebar className="h-full flex flex-col justify-between">
+        <div>
           <SidebarItem
-            icon={<UserCircle size={20} />}
-            text="Socios"
-            active={activeItem === "Socios"}
-            onClick={() => handleItemClick("Socios")}
+            icon={<LayoutDashboard size={20} />}
+            text="Novedades"
+            active={activeItem === "Novedades"}
+            onClick={() => handleItemClick("Novedades")}
           />
-        )}
-        {user.rol_usuario === 2 && (
+          {user.rol_usuario === 2 && (
+            <SidebarItem
+              icon={<UserCircle size={20} />}
+              text="Socios"
+              active={activeItem === "Socios"}
+              onClick={() => handleItemClick("Socios")}
+            />
+          )}
+          {user.rol_usuario === 2 && (
+            <SidebarItem
+              icon={<BarChart3 size={20} />}
+              text="Recaudación"
+              active={activeItem === "Recaudación"}
+              onClick={() => handleItemClick("Recaudación")}
+              alert
+            />
+          )}
           <SidebarItem
-            icon={<BarChart3 size={20} />}
-            text="Recaudación"
-            active={activeItem === "Recaudación"}
-            onClick={() => handleItemClick("Recaudación")}
-            alert
+            icon={<Receipt size={20} />}
+            text="Pagos"
+            active={activeItem === "Pagos"}
+            onClick={() => handleItemClick("Pagos")}
           />
-        )}
-        <SidebarItem
-          icon={<Receipt size={20} />}
-          text="Pagos"
-          active={activeItem === "Pagos"}
-          onClick={() => handleItemClick("Pagos")}
-        />
-        <hr className="my-3" />
-        <SidebarItem icon={<Settings size={20} />} text="Mi Perfil" />
-        <SidebarItem icon={<LifeBuoy size={20} />} text="Contacto" />
+        </div>
+        <div className="mt-auto">
+          <hr className="my-3" />
+          <SidebarItem icon={<Settings size={20} />} text="Mi Perfil" />
+          <SidebarItem icon={<LifeBuoy size={20} />} text="Contacto" />
+        </div>
       </Sidebar>
 
       {/* visualización de elementos de navegacion */}

@@ -91,6 +91,18 @@ export const logout = (req, res) => {
   res.status(200).json({ message: "Sesión cerrada" });
 };
 
+export const findUser = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const userFound = await User.findById(id);
+
+    if (!userFound) return res.status(400).json(["Usuario no encontrado"]);
+
+    res.status(200).json(userFound);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 //Obtener información del usuario
 export const profile = async (req, res) => {
   const userFound = await User.findById(req.user.id);
@@ -111,6 +123,38 @@ export const profile = async (req, res) => {
     rol_usuario: userFound.rol_usuario,
     socio_activo: userFound.socio_activo,
   });
+};
+
+//Actualizar usuario
+export const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const {
+    nombre,
+    apellido,
+    fecha_nacimiento,
+    domicilio,
+    localidad,
+    telefono,
+    socio_activo,
+  } = req.body;
+
+  try {
+    const userFound = await User.findById(id);
+    if (!userFound) return res.status(400).json(["Usuario no encontrado"]);
+
+    userFound.nombre = nombre;
+    userFound.apellido = apellido;
+    userFound.fecha_nacimiento = fecha_nacimiento;
+    userFound.domicilio = domicilio;
+    userFound.localidad = localidad;
+    userFound.telefono = telefono;
+    userFound.socio_activo = socio_activo;
+
+    const userUpdated = await userFound.save();
+    res.status(200).json(userUpdated);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 export const verifyToken = async (req, res) => {

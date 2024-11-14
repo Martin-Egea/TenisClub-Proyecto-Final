@@ -16,18 +16,24 @@ import {
   actualizarCuotaSocial,
   obtenerCuotaSocialXid,
 } from "../api/cuotaSocial.api.js";
+import { actualizarUsuario, buscarUsuarioXid } from "../api/user.api.js";
 import { importeFormateado } from "../utils/formatearDatos.js";
 
 async function actualizarEstadoUsuario(id) {
   const res = await obtenerCuotaSocialXid(id);
   res.data.revisado = true;
   actualizarCuotaSocial(res.data);
+
+  const user = await buscarUsuarioXid(res.data.socio);
+  user.data.socio_activo = true;
+  console.log(user.data);
+  actualizarUsuario(user.data);
 }
 
 export default function TablaRevisionPagos({ active }) {
   // lo de abajo en realidad son cuotas a revisar XD!
   const [usuariosARevisar, setUsuariosARevisar] = useState([]);
-  const { cuotasSociales, getAllCuotasSociales } = useUser();
+  const { cuotasSociales, getAllCuotasSociales, getAllUsers } = useUser();
 
   useEffect(() => {
     const cargarCuotasSociales = async () => {
@@ -46,6 +52,7 @@ export default function TablaRevisionPagos({ active }) {
   const handleConfirmarRevision = async (id) => {
     await actualizarEstadoUsuario(id);
     getAllCuotasSociales();
+    getAllUsers();
   };
 
   return (

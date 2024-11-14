@@ -6,6 +6,8 @@ import {
   profile,
   register,
   verifyToken,
+  updateUser,
+  findUser,
 } from "../controllers/user.controller.js";
 import { authRequired } from "../middlewares/validateToken.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
@@ -17,6 +19,8 @@ router.post("/register", validateSchema(registerSchema), register);
 router.post("/login", validateSchema(loginSchema), login);
 router.post("/logout", logout);
 router.get("/users", allUsers);
+router.put("/users/:id", authRequired, updateUser);
+router.get("/findUser/:id", authRequired, findUser);
 
 router.get("/verify", verifyToken);
 

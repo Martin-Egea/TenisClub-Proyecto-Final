@@ -26,8 +26,8 @@ export default function LoginPage() {
 
   const onSubmit = handleSubmit((data) => {
     signIn(data);
-    getAllCuotasSociales();
     getAllUsers();
+    getAllCuotasSociales();
   });
 
   useEffect(() => {
@@ -114,8 +114,8 @@ export default function LoginPage() {
                   apellido: decoded.family_name,
                 };
                 googleLoginOrRegister(usuarioGoogle);
-                getAllCuotasSociales();
                 getAllUsers();
+                getAllCuotasSociales();
               }}
               onError={() => {
                 console.log("Login Failed");

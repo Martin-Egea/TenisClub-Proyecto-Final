@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
+import { ChevronFirst, ChevronLast, MoreVertical, User } from "lucide-react";
 import { createContext, useContext, useState } from "react";
 import { useUser } from "../context/UserContext.jsx";
 
@@ -8,6 +8,17 @@ const SidebarContext = createContext();
 export function Sidebar({ children }) {
   const [expanded, setExpanded] = useState(true);
   const { user, logout } = useUser();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    // Lógica para cerrar sesión
+    logout();
+    setIsOpen(false);
+  };
 
   return (
     <aside className="h-screen w-max float-left sticky top-0 mr-4 animate-fade-right">
@@ -29,15 +40,16 @@ export function Sidebar({ children }) {
         </div>
 
         <SidebarContext.Provider value={{ expanded }}>
-          <ul className="flex-1 px-3">{children}</ul>
+          <ul className="flex-1 flex-col px-3">{children}</ul>
         </SidebarContext.Provider>
 
         <div className="border-t flex p-3">
-          <img
+          {/* <img
             src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
             alt=""
             className="w-10 h-10 rounded-md"
-          />
+          /> */}
+          <User className="w-10 h-10 rounded-md bg-slate-200" />
           <div
             className={`
               flex justify-between items-center
@@ -52,12 +64,24 @@ export function Sidebar({ children }) {
                 {user ? user.email : "John Doe"}
               </span>
             </div>
-            <button
-              onClick={logout}
-              className="rounded-lg bg-gray-50 hover:bg-gray-100"
-            >
-              <MoreVertical size={20} />
-            </button>
+            <div className="">
+              <button
+                onClick={toggleMenu}
+                className="px-4 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition"
+              >
+                <MoreVertical size={20} />
+              </button>
+              {isOpen && (
+                <div className="absolute right-0 bottom-16 m-2 w-48 bg-white border-orange-200 border rounded shadow-xl animate-fade-up animate-duration-500">
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full px-4 py-2 text-center text-gray-700 hover:bg-gray-100 "
+                  >
+                    Cerrar sesión
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </nav>
