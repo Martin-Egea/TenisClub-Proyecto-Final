@@ -20,46 +20,48 @@ export function CuotaConfirmadaDeSocios({ active }) {
   );
 
   return (
-    <div
-      className={`flex justify-center mr-3 rounded-lg items-center bg-white opacity-100 animate-fade-up
+    <div className="flex items-center justify-center">
+      <div
+        className={`mr-3 rounded-lg bg-white animate-fade-up max-w-[600px] min-w-[450px]
     ${active ? "" : "hidden"} `}
-    >
-      <Table>
-        <TableCaption>Lista de Cuotas Sociales Revisadas</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Mes</TableHead>
-            <TableHead className="text-center">Importe</TableHead>
-            <TableHead className="text-center">Revisado</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {cuotasRevisadas.map((cuota, index) => (
-            <TableRow
-              key={index}
-              className={cuota.revisado ? "bg-green-50" : "bg-red-50"}
-            >
-              <TableCell>{mesFormateado(cuota.mes)}</TableCell>
-              <TableCell className="text-right">
-                $ {importeFormateado(cuota.importe)}
-              </TableCell>
-              <TableCell className="flex justify-center">
-                {cuota.revisado ? (
-                  <div className="flex text-green-600">
-                    <CheckCircle className="h-5 w-5 mr-2" />
-                    Revisado
-                  </div>
-                ) : (
-                  <div className="flex text-red-600">
-                    <XCircle className="h-5 w-5 mr-2" />
-                    No revisado
-                  </div>
-                )}
-              </TableCell>
+      >
+        <Table>
+          <TableCaption>Lista de Cuotas Sociales Revisadas</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Mes</TableHead>
+              <TableHead className="text-center">Importe</TableHead>
+              <TableHead className="text-center">Revisado</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {cuotasRevisadas.map((cuota, index) => (
+              <TableRow
+                key={index}
+                className={cuota.revisado ? "bg-green-50" : "bg-red-50"}
+              >
+                <TableCell>{mesFormateado(cuota.mes)}</TableCell>
+                <TableCell className="text-right">
+                  $ {importeFormateado(cuota.importe)}
+                </TableCell>
+                <TableCell className="flex justify-center">
+                  {cuota.revisado ? (
+                    <div className="flex text-green-600">
+                      <CheckCircle className="h-5 w-5 mr-2" />
+                      Revisado
+                    </div>
+                  ) : (
+                    <div className="flex text-red-600">
+                      <XCircle className="h-5 w-5 mr-2" />
+                      No revisado
+                    </div>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }

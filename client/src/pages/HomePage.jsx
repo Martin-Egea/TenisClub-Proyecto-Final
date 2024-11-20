@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sidebar, SidebarItem } from "../components/Sidebar";
 import { Payment } from "../components/Payment";
 import {
@@ -14,10 +14,21 @@ import TablaSocios from "../components/TablaSocios";
 import TablaRevisionPagos from "../components/TablaRevisionPagos";
 import GraficoRegistroSocios from "@/components/GraficoRegistroSocios";
 import { useUser } from "@/context/UserContext";
+import MiPerfilFormulario from "@/components/MiPerfilFormulario";
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("Novedades");
-  const { user } = useUser();
+  const { user, getAllUsers, getAllCuotasSociales } = useUser();
+  const [logged, setLogged] = useState(false);
+
+  //Actualizar los estados de los socios despues del login
+  useEffect(() => {
+    if (user && !logged) {
+      getAllUsers();
+      getAllCuotasSociales();
+      setLogged(true);
+    }
+  }, [user, getAllUsers, getAllCuotasSociales, logged]);
 
   const handleItemClick = (item) => {
     setActiveItem(item);
@@ -59,20 +70,26 @@ export default function HomePage() {
         </div>
         <div className="mt-auto">
           <hr className="my-3" />
-          <SidebarItem icon={<Settings size={20} />} text="Mi Perfil" />
+          <SidebarItem
+            icon={<Settings size={20} />}
+            text="Mi Perfil"
+            active={activeItem === "Mi Perfil"}
+            onClick={() => handleItemClick("Mi Perfil")}
+          />
           <SidebarItem icon={<LifeBuoy size={20} />} text="Contacto" />
         </div>
       </Sidebar>
 
       {/* visualización de elementos de navegacion */}
       <Payment active={activeItem === "Pagos"} />
-
       <CuotaConfirmadaDeSocios active={activeItem === "Pagos"} />
 
       <TablaSocios active={activeItem === "Socios"} />
 
       <GraficoRegistroSocios active={activeItem === "Recaudación"} />
       <TablaRevisionPagos active={activeItem === "Recaudación"} />
+
+      <MiPerfilFormulario active={activeItem === "Mi Perfil"} />
     </main>
   );
 }

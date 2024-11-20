@@ -62,7 +62,7 @@ export default function GraficoRegistroSocios({ active }) {
     <div
       className={`flex justify-center items-center mx-auto p-4 min-h-[500px] min-w-[500px] animate-fade-left 
         ${active ? "" : "hidden"} `}
-      style={{ minWidth: 500, minHeight: 500 }}
+      style={{ minWidth: 600, minHeight: 600 }}
     >
       <Card className="w-full max-w-3xl">
         <CardHeader>

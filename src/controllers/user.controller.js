@@ -75,6 +75,10 @@ export const login = async (req, res) => {
       id: userFound._id,
       nombre: userFound.nombre,
       apellido: userFound.apellido,
+      fecha_nacimiento: userFound.fecha_nacimiento,
+      domicilio: userFound.domicilio,
+      localidad: userFound.localidad,
+      telefono: userFound.telefono,
       email: userFound.email,
       contraseña: userFound.password,
       token: token,
@@ -135,6 +139,7 @@ export const updateUser = async (req, res) => {
     domicilio,
     localidad,
     telefono,
+    email,
     socio_activo,
   } = req.body;
 
@@ -148,6 +153,7 @@ export const updateUser = async (req, res) => {
     userFound.domicilio = domicilio;
     userFound.localidad = localidad;
     userFound.telefono = telefono;
+    userFound.email = email;
     userFound.socio_activo = socio_activo;
 
     const userUpdated = await userFound.save();

@@ -26,8 +26,8 @@ export default function LoginPage() {
 
   const onSubmit = handleSubmit((data) => {
     signIn(data);
-    getAllUsers();
-    getAllCuotasSociales();
+    /* getAllUsers();
+    getAllCuotasSociales(); */
   });
 
   useEffect(() => {
