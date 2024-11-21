@@ -17,7 +17,7 @@ import {
   obtenerCuotaSocialXid,
 } from "../api/cuotaSocial.api.js";
 import { actualizarUsuario, buscarUsuarioXid } from "../api/user.api.js";
-import { importeFormateado } from "../utils/formatearDatos.js";
+import { importeFormateado, mesFormateado } from "../utils/formatearDatos.js";
 
 async function actualizarEstadoUsuario(id) {
   const res = await obtenerCuotaSocialXid(id);
@@ -85,7 +85,7 @@ export default function TablaRevisionPagos({ active }) {
                   <TableCell className="text-right">
                     ${importeFormateado(usuario.importe)}
                   </TableCell>
-                  <TableCell>{usuario.mes}</TableCell>
+                  <TableCell>{mesFormateado(usuario.mes)}</TableCell>
                   <TableCell>
                     <Button
                       onClick={() => handleConfirmarRevision(usuario._id)}

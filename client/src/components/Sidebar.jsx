@@ -75,7 +75,7 @@ export function Sidebar({ children }) {
                 <div className="absolute right-0 bottom-16 m-2 w-48 bg-white border-orange-200 border rounded shadow-xl animate-fade-up animate-duration-500">
                   <button
                     onClick={handleLogout}
-                    className="block w-full px-4 py-2 text-center text-gray-700 hover:bg-gray-100 "
+                    className="block font-semibold w-full px-4 py-2 text-center text-gray-700 hover:bg-gray-100 "
                   >
                     Cerrar sesión
                   </button>

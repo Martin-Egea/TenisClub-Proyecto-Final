@@ -31,7 +31,7 @@ import { useUser } from "../context/UserContext";
 // eslint-disable-next-line react/prop-types
 export default function MiPerfilFormulario({ active }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { user } = useUser();
+  const { user, updateUser } = useUser();
 
   const form = useForm({
     defaultValues: {
@@ -43,7 +43,6 @@ export default function MiPerfilFormulario({ active }) {
       telefono: "",
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
@@ -52,20 +51,28 @@ export default function MiPerfilFormulario({ active }) {
   useEffect(() => {
     if (user) {
       // Crea una nueva fecha con el formato correcto
-      const fechaNacimiento = new Date(user.fecha_nacimiento);
-      fechaNacimiento.setDate(fechaNacimiento.getDate() + 1);
+      // y si no tiene fecha de nacimiento la deja vacia
+      const fechaNacimiento = user.fecha_nacimiento
+        ? new Date(user.fecha_nacimiento)
+        : "";
+      // Agrega un día si la fecha es válida
+      if (
+        fechaNacimiento instanceof Date &&
+        !isNaN(fechaNacimiento.getTime())
+      ) {
+        fechaNacimiento.setDate(fechaNacimiento.getDate() + 1);
+      }
 
       // Actualiza los valores del formulario con los datos de `user`
       reset({
         nombre: user.nombre,
         apellido: user.apellido,
-        fecha_nacimiento: fechaNacimiento.toISOString().split("T")[0],
+        fecha_nacimiento: fechaNacimiento,
         domicilio: user.domicilio,
         localidad: user.localidad,
         telefono: user.telefono,
         email: user.email,
         password: "",
-        confirmPassword: "",
       });
     }
   }, [user, reset]);
@@ -83,16 +90,27 @@ export default function MiPerfilFormulario({ active }) {
   };
 
   const handleConfirm = () => {
-    console.log("Perfil actualizado", form.getValues());
-
     //cambiando formato de la fecha
     const fechaOriginal = form.getValues().fecha_nacimiento;
     const opciones = { day: "2-digit", month: "2-digit", year: "numeric" }; // Formato deseado
     const fechaFormateada = new Intl.DateTimeFormat("es-AR", opciones).format(
       new Date(fechaOriginal)
     );
-    console.log("Fecha de nacimiento", fechaFormateada);
 
+    const userUpdated = {
+      _id: user.id,
+      nombre: form.getValues().nombre,
+      apellido: form.getValues().apellido,
+      fecha_nacimiento: fechaFormateada,
+      domicilio: form.getValues().domicilio,
+      localidad: form.getValues().localidad,
+      telefono: form.getValues().telefono,
+      email: form.getValues().email,
+      password: form.getValues().password,
+    };
+
+    updateUser(userUpdated);
+    //console.log(user);
     setIsDialogOpen(false);
   };
 
@@ -263,6 +281,11 @@ export default function MiPerfilFormulario({ active }) {
                       value: 8,
                       message: "La contraseña debe tener al menos 8 caracteres",
                     },
+                    required:
+                      form.getValues().password &&
+                      form.getValues().password !== ""
+                        ? true
+                        : false,
                   }}
                   render={({ field }) => (
                     <FormItem>
@@ -279,8 +302,15 @@ export default function MiPerfilFormulario({ active }) {
                   name="confirmPassword"
                   rules={{
                     validate: (value) =>
-                      value === form.getValues().password ||
-                      "Las contraseñas no coinciden",
+                      form.getValues().password
+                        ? value === form.getValues().password ||
+                          "Las contraseñas no coinciden"
+                        : true,
+                    required:
+                      form.getValues().password &&
+                      form.getValues().password !== ""
+                        ? true
+                        : false,
                   }}
                   render={({ field }) => (
                     <FormItem>

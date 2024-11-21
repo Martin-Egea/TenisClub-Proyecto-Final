@@ -15,6 +15,7 @@ import TablaRevisionPagos from "../components/TablaRevisionPagos";
 import GraficoRegistroSocios from "@/components/GraficoRegistroSocios";
 import { useUser } from "@/context/UserContext";
 import MiPerfilFormulario from "@/components/MiPerfilFormulario";
+import NovedadCard from "@/components/NovedadCard";
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("Novedades");
@@ -43,6 +44,7 @@ export default function HomePage() {
             text="Novedades"
             active={activeItem === "Novedades"}
             onClick={() => handleItemClick("Novedades")}
+            alert
           />
           {user.rol_usuario === 2 && (
             <SidebarItem
@@ -81,6 +83,30 @@ export default function HomePage() {
       </Sidebar>
 
       {/* visualización de elementos de navegacion */}
+      <div className="flex flex-wrap gap-4 mt-5 justify-center">
+        <NovedadCard
+          titulo="Novedad 1"
+          descripcion="ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates."
+          imagen="https://lh4.googleusercontent.com/proxy/5_ILxH5Sn1iKQsa4IAxWW5vkKTtqrwOhplNjUVbtk8CN2_DKnEvUYeyaJT3uYzRDwMUhzcquqhEbg5DH1huqrW20ArEoeX3TO3UN1L01wy8T69A2llKczzGEtqiZ477Rc7_lC-OYZ6RhopxiEF_HGj4XofLJYHICam48Gw"
+          isAdmin={user.rol_usuario === 2}
+          active={activeItem === "Novedades"}
+        />
+        <NovedadCard
+          titulo="Novedad 2"
+          descripcion="ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates."
+          imagen="https://services.meteored.com/img/article/torneio-de-tenis-us-open-em-nova-iorque-reajusta-se-aos-novos-desafios-impostos-pelas-alteracoes-climaticas-1724693275614_512.jpeg"
+          isAdmin={user.rol_usuario === 2}
+          active={activeItem === "Novedades"}
+        />
+        <NovedadCard
+          titulo="Novedad 3"
+          descripcion="ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates."
+          imagen="https://www.superprof.com.ar/blog/wp-content/uploads/2024/01/pexels-dmytro-2694942.jpg"
+          isAdmin={user.rol_usuario === 2}
+          active={activeItem === "Novedades"}
+        />
+      </div>
+
       <Payment active={activeItem === "Pagos"} />
       <CuotaConfirmadaDeSocios active={activeItem === "Pagos"} />
 

@@ -6,6 +6,7 @@ import {
   loginDeUsuario,
   verifyUserToken,
   obtenerUsuarios,
+  actualizarUsuario,
 } from "../api/user.api";
 import {
   obtenerCuotasSociales,
@@ -98,6 +99,12 @@ export const UserProvider = ({ children }) => {
     console.log(res);
   };
 
+  //actualizar un usuario
+  const updateUser = async (user) => {
+    const res = await actualizarUsuario(user);
+    console.log(res);
+  };
+
   //eliminar una cuota social
   const deleteCuotaSocial = async (id) => {
     await eliminarCuotaSocial(id);
@@ -163,6 +170,7 @@ export const UserProvider = ({ children }) => {
         allUsers,
         cuotasSociales,
         getAllUsers,
+        updateUser,
         setCuotasSociales,
         getAllCuotasSociales,
         deleteCuotaSocial,

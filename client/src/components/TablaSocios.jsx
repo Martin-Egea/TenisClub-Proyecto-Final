@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { CheckCircle, Search, XCircle } from "lucide-react";
 import { useUser } from "../context/UserContext";
 import { importeFormateado, mesFormateado } from "../utils/formatearDatos.js";
 
@@ -134,7 +134,17 @@ export default function TablaSocios({ active }) {
                   </TableCell>
                   <TableCell>{usuario.localidad}</TableCell>
                   <TableCell className="text-center">
-                    {usuario.socio_activo ? "Sí" : "No"}
+                    {usuario.socio_activo ? (
+                      <div className="flex justify-center text-green-600">
+                        <CheckCircle className="h-5 w-5 mr-2" />
+                        Sí
+                      </div>
+                    ) : (
+                      <div className="flex justify-center text-red-600">
+                        <XCircle className="h-5 w-5 mr-2" />
+                        No
+                      </div>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
