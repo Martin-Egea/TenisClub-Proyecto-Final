@@ -42,7 +42,9 @@ export default function NovedadCard({
   return (
     <>
       <div
-        className={`flex justify-center items-center ${active ? "" : "hidden"}`}
+        className={`flex justify-center items-center mr-3 ${
+          active ? "" : "hidden"
+        }`}
       >
         <Card
           className="w-full max-w-sm cursor-pointer transform hover:scale-105 transition-all duration-300 hover:shadow-2xl animate-fade"

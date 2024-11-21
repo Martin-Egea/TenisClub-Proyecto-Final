@@ -18,6 +18,7 @@ import MiPerfilFormulario from "@/components/MiPerfilFormulario";
 import NovedadCard from "@/components/NovedadCard";
 import BarraNovedades from "@/components/NovedadAgregar";
 import { Toaster } from "@/components/ui/toaster";
+import DeveloperContact from "@/components/ContactoDesarrollador";
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("Novedades");
@@ -80,12 +81,19 @@ export default function HomePage() {
             active={activeItem === "Mi Perfil"}
             onClick={() => handleItemClick("Mi Perfil")}
           />
-          <SidebarItem icon={<LifeBuoy size={20} />} text="Contacto" />
+          <SidebarItem
+            icon={<LifeBuoy size={20} />}
+            text="Contacto"
+            active={activeItem === "Contacto"}
+            onClick={() => handleItemClick("Contacto")}
+          />
         </div>
       </Sidebar>
 
       {/* visualización de elementos de navegacion */}
-      <BarraNovedades active={activeItem === "Novedades"} />
+      {user.rol_usuario === 2 && (
+        <BarraNovedades active={activeItem === "Novedades"} />
+      )}
       <div className="flex flex-wrap gap-4 mt-5 justify-center">
         <NovedadCard
           titulo="Novedad 1"
@@ -119,6 +127,8 @@ export default function HomePage() {
       <TablaRevisionPagos active={activeItem === "Recaudación"} />
 
       <MiPerfilFormulario active={activeItem === "Mi Perfil"} />
+
+      <DeveloperContact active={activeItem === "Contacto"} />
 
       <Toaster />
     </main>

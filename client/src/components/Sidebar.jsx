@@ -21,7 +21,7 @@ export function Sidebar({ children }) {
   };
 
   return (
-    <aside className="h-screen w-max float-left sticky top-0 mr-4 animate-fade-right">
+    <aside className="h-screen w-max float-left sticky top-0 mr-4 animate-fade-right z-50">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm ">
         <div className="p-4 pb-2 flex justify-between items-center">
           <img
@@ -109,7 +109,7 @@ export function SidebarItem({ icon, text, active, alert, onClick }) {
       {icon}
       <span
         className={`overflow-hidden transition-all ${
-          expanded ? "w-52 ml-3" : "w-0"
+          expanded ? "w-52 ml-3" : "w-0 max-h-6"
         }`}
       >
         {text}
@@ -125,7 +125,7 @@ export function SidebarItem({ icon, text, active, alert, onClick }) {
       {!expanded && (
         <div
           className={`
-            absolute left-full rounded-md px-2 py-1 ml-6
+            absolute left-full rounded-md px-2 py-1 ml-6 w-auto
             bg-orange-100 text-orange-800 text-sm
             invisible opacity-20 -translate-x-3 transition-all
             group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
