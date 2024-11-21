@@ -16,13 +16,18 @@ export function Payment({ active }) {
     getAllCuotasSociales();
   });
 
+  // si el componente no esta activo, no mostrar nada
+  if (!active) {
+    return null;
+  }
+
   return (
     <div
       className={`flex justify-center items-center animate-fade-left 
     ${active ? "" : "hidden"} `}
     >
       <div className=" flex justify-center ">
-        <div className=" bg-white my-3 p-6 shadow-2xl rounded-lg min-w-[300px] w-full max-h-fit">
+        <div className=" bg-white my-3 p-6 shadow-2xl rounded-lg min-w-[300px] w-full max-h-fit ">
           <h2 className="text-xl font-bold mb-6 text-center">
             Información de Pago
           </h2>

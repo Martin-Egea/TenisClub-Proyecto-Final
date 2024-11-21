@@ -74,6 +74,11 @@ export default function TablaSocios({ active }) {
     setDialogoAbierto(true);
   };
 
+  // si el componente no esta activo, no mostrar nada
+  if (!active) {
+    return null;
+  }
+
   return (
     <div
       className={`flex justify-center items-center mx-auto p-4 animate-fade-left

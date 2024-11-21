@@ -19,10 +19,15 @@ export function CuotaConfirmadaDeSocios({ active }) {
     (cuota) => user.id === cuota.socio._id
   );
 
+  // si el componente no esta activo, no mostrar nada
+  if (!active) {
+    return null;
+  }
+
   return (
     <div className="flex items-center justify-center">
       <div
-        className={`mr-3 rounded-lg bg-white animate-fade-up max-w-[600px] min-w-[450px]
+        className={`mr-3 rounded-lg bg-white animate-fade-up max-w-[600px] min-w-[450px] shadow-xl
     ${active ? "" : "hidden"} `}
       >
         <Table>

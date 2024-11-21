@@ -27,11 +27,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useUser } from "../context/UserContext";
+import { useToast } from "@/hooks/use-toast";
 
 // eslint-disable-next-line react/prop-types
 export default function MiPerfilFormulario({ active }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { user, updateUser } = useUser();
+  const { toast } = useToast();
 
   const form = useForm({
     defaultValues: {
@@ -85,7 +87,10 @@ export default function MiPerfilFormulario({ active }) {
     if (form.formState.isValid) {
       setIsDialogOpen(true);
     } else {
-      alert("Debes modificar al menos un campo");
+      toast({
+        title: "Error",
+        description: "Debes modificar al menos un campo!",
+      });
     }
   };
 
@@ -113,6 +118,11 @@ export default function MiPerfilFormulario({ active }) {
     //console.log(user);
     setIsDialogOpen(false);
   };
+
+  // si el componente no esta activo, no mostrar nada
+  if (!active) {
+    return null;
+  }
 
   return (
     <div

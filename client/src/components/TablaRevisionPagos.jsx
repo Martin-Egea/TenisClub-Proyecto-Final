@@ -55,6 +55,11 @@ export default function TablaRevisionPagos({ active }) {
     getAllUsers();
   };
 
+  // si el componente no esta activo, no mostrar nada
+  if (!active) {
+    return null;
+  }
+
   return (
     <div
       className={`flex justify-center items-center animate-fade-up 

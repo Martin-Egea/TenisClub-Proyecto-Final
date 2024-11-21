@@ -58,13 +58,18 @@ export default function GraficoRegistroSocios({ active }) {
     return datosAgrupados;
   }, [cuotasSociales]);
 
+  // si el componente no esta activo, no mostrar nada
+  if (!active) {
+    return null;
+  }
+
   return (
     <div
       className={`flex justify-center items-center mx-auto p-4 min-h-[500px] min-w-[500px] animate-fade-left 
         ${active ? "" : "hidden"} `}
       style={{ minWidth: 600, minHeight: 600 }}
     >
-      <Card className="w-full max-w-3xl">
+      <Card className="w-full max-w-3xl shadow-xl">
         <CardHeader>
           <CardTitle>Registro de Socios por Mes</CardTitle>
           <CardDescription>
@@ -80,31 +85,33 @@ export default function GraficoRegistroSocios({ active }) {
               },
             }}
           >
-            <BarChart
-              data={datosProcesados}
-              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="mes"
-                tickFormatter={(value) =>
-                  value.charAt(0).toUpperCase() + value.slice(1)
-                }
-              />
-              <YAxis />
-              <Tooltip
-                formatter={(value) =>
-                  new Intl.NumberFormat("es-AR", {
-                    style: "currency",
-                    currency: "ARS",
-                  }).format(value)
-                }
-                labelFormatter={(label) =>
-                  label.charAt(0).toUpperCase() + label.slice(1)
-                }
-              />
-              <Bar dataKey="total" fill="var(--color-total)" />
-            </BarChart>
+            {active && datosProcesados.length > 0 && (
+              <BarChart
+                data={datosProcesados}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="mes"
+                  tickFormatter={(value) =>
+                    value.charAt(0).toUpperCase() + value.slice(1)
+                  }
+                />
+                <YAxis />
+                <Tooltip
+                  formatter={(value) =>
+                    new Intl.NumberFormat("es-AR", {
+                      style: "currency",
+                      currency: "ARS",
+                    }).format(value)
+                  }
+                  labelFormatter={(label) =>
+                    label.charAt(0).toUpperCase() + label.slice(1)
+                  }
+                />
+                <Bar dataKey="total" fill="var(--color-total)" />
+              </BarChart>
+            )}
           </ChartContainer>
         </CardContent>
       </Card>

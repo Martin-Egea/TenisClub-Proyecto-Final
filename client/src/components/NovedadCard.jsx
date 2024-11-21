@@ -34,6 +34,11 @@ export default function NovedadCard({
     onDelete();
   };
 
+  // si el componente no esta activo, no mostrar nada
+  if (!active) {
+    return null;
+  }
+
   return (
     <>
       <div
