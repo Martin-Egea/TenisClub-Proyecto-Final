@@ -6,6 +6,8 @@ import cors from "cors";
 import userRoutes from "./routes/user.routes.js";
 import cuotaSocialRoutes from "./routes/cuotaSocial.routes.js";
 import googleAuthRoutes from "./routes/googleAuth.routes.js";
+import canchasRoutes from "./routes/cancha.routes.js";
+import reservaRoutes from "./routes/reserva.routes.js";
 
 const app = express();
 
@@ -22,5 +24,7 @@ app.use(cookieParser());
 app.use("/api", userRoutes);
 app.use("/api", cuotaSocialRoutes);
 app.use("/api", googleAuthRoutes);
+app.use("/api", canchasRoutes);
+app.use("/api", reservaRoutes);
 
 export default app;

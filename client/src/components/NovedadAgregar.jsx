@@ -29,7 +29,7 @@ export default function BarraNovedades({ active }) {
 
   return (
     <div
-      className={`flex justify-center items-center mt-3 mr-3 animate-fade-down animate-duration-500
+      className={`flex justify-center items-center mt-3 mr-3 animate-fade-down
         ${active ? "" : "hidden"} `}
     >
       <Card className="w-full pt-3 overflow-hidden">
