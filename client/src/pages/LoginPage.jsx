@@ -16,9 +16,9 @@ export default function LoginPage() {
   const {
     signIn,
     errors: signInErrors,
-    isAuthenticated,
+    isAuthenticated /* 
     getAllCuotasSociales,
-    getAllUsers,
+    getAllUsers, */,
     googleLoginOrRegister,
   } = useUser();
 
@@ -114,8 +114,8 @@ export default function LoginPage() {
                   apellido: decoded.family_name,
                 };
                 googleLoginOrRegister(usuarioGoogle);
-                getAllUsers();
-                getAllCuotasSociales();
+                /* getAllUsers();
+                getAllCuotasSociales(); */
               }}
               onError={() => {
                 console.log("Login Failed");

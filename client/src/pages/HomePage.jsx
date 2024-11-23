@@ -8,6 +8,7 @@ import {
   BarChart3,
   LayoutDashboard,
   Settings,
+  CalendarSearch,
 } from "lucide-react";
 import CuotaConfirmadaDeSocios from "../components/CuotaConfirmadaDeSocios";
 import TablaSocios from "../components/TablaSocios";
@@ -19,6 +20,7 @@ import NovedadCard from "@/components/NovedadCard";
 import BarraNovedades from "@/components/NovedadAgregar";
 import { Toaster } from "@/components/ui/toaster";
 import DeveloperContact from "@/components/ContactoDesarrollador";
+import { ReservaCanchas } from "@/components/reservas/ReservaCanchas";
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("Novedades");
@@ -48,6 +50,12 @@ export default function HomePage() {
             active={activeItem === "Novedades"}
             onClick={() => handleItemClick("Novedades")}
             alert
+          />
+          <SidebarItem
+            icon={<CalendarSearch size={20} />}
+            text="Reservas"
+            active={activeItem === "Reservas"}
+            onClick={() => handleItemClick("Reservas")}
           />
           {user.rol_usuario === 2 && (
             <SidebarItem
@@ -91,6 +99,9 @@ export default function HomePage() {
       </Sidebar>
 
       {/* visualización de elementos de navegacion */}
+
+      <ReservaCanchas active={activeItem === "Reservas"} />
+
       {user.rol_usuario === 2 && (
         <BarraNovedades active={activeItem === "Novedades"} />
       )}
