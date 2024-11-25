@@ -65,7 +65,7 @@ export default function GraficoRegistroSocios({ active }) {
 
   return (
     <div
-      className={`flex justify-center items-center mx-auto p-4 min-h-[500px] min-w-[500px] animate-fade-left 
+      className={`flex justify-center items-center mx-auto p-4 min-h-[250px] min-w-[250px] animate-fade-left 
         ${active ? "" : "hidden"} `}
       style={{ minWidth: 600, minHeight: 600 }}
     >

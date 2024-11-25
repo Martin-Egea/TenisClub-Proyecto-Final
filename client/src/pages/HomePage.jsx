@@ -21,6 +21,7 @@ import BarraNovedades from "@/components/NovedadAgregar";
 import { Toaster } from "@/components/ui/toaster";
 import DeveloperContact from "@/components/ContactoDesarrollador";
 import { ReservaCanchas } from "@/components/reservas/ReservaCanchas";
+import { ReservasDeUsuario } from "@/components/reservas/ReservaDeUsuario";
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("Novedades");
@@ -100,10 +101,18 @@ export default function HomePage() {
 
       {/* visualización de elementos de navegacion */}
 
+      <ReservasDeUsuario
+        usuarioId={user.id}
+        active={activeItem === "Reservas"}
+      />
+
       <ReservaCanchas active={activeItem === "Reservas"} />
 
       {user.rol_usuario === 2 && (
-        <BarraNovedades active={activeItem === "Novedades"} />
+        <BarraNovedades
+          usuarioId={user.id}
+          active={activeItem === "Novedades"}
+        />
       )}
       <div className="flex flex-wrap gap-4 mt-5 justify-center">
         <NovedadCard

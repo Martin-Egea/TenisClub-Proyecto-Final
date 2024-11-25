@@ -27,7 +27,7 @@ export function Payment({ active }) {
     ${active ? "" : "hidden"} `}
     >
       <div className=" flex justify-center ">
-        <div className=" bg-white my-3 p-6 shadow-2xl rounded-lg min-w-[300px] w-full max-h-fit ">
+        <div className=" bg-white my-3 p-6 shadow-2xl rounded-lg min-w-[200px] w-full max-h-fit mr-3">
           <h2 className="text-xl font-bold mb-6 text-center">
             Información de Pago
           </h2>
@@ -112,7 +112,7 @@ export function Payment({ active }) {
                 </div>
               </div>
               {/* QR de mercado pago */}
-              <div className="rounded-xl min-w-[200px] border p-1">
+              <div className="rounded-xl flex flex-col justify-evenly items-center min-w-[130px] border p-1">
                 <img
                   className="max-h-80"
                   src="https://www.partyplace.com.ar/image/0/0_0-qr%20sin%20costo%20mercado%20pago1.png"

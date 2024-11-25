@@ -126,7 +126,7 @@ export default function MiPerfilFormulario({ active }) {
 
   return (
     <div
-      className={`flex justify-center items-center mx-auto p-4 min-h-[500px] min-w-[500px] animate-fade-left ${
+      className={`flex justify-center items-center mx-auto p-4 min-h-[500px] min-w-[300px] animate-fade-left ${
         active ? "" : "hidden"
       }`}
     >

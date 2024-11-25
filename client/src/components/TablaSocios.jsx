@@ -90,7 +90,7 @@ export default function TablaSocios({ active }) {
             Tabla de Socios
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="w-80 md:w-auto">
           <div className="flex items-center space-x-2 mb-4">
             <Search className="text-gray-400" />
             <Input

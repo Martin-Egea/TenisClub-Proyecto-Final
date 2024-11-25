@@ -163,11 +163,11 @@ export function ReservaCanchas({ active }) {
 
   return (
     <div
-      className={`flex justify-center items-center
+      className={`flex justify-center items-center sticky top-0
         ${active ? "" : "hidden"} `}
     >
       <div className="w-full  mx-auto mr-3">
-        <div className="mb-3 mt-4 flex justify-center items-center sticky top-4 z-50 animate-fade-down">
+        <div className="mb-3 mt-4 flex justify-center items-center sticky top-16 z-50 animate-fade-down">
           <Popover>
             <PopoverTrigger asChild>
               <Button
