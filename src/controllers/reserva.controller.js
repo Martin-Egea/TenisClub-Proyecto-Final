@@ -30,6 +30,41 @@ export const obtenerReservasPorCancha = async (req, res) => {
   }
 };
 
+export const obtenerReservasPorFechaEIdCancha = async (req, res) => {
+  const { fecha, id_cancha } = req.body;
+  console.log(fecha, id_cancha);
+  try {
+    const reservas = await Reserva.find({ fecha, id_cancha });
+    if (reservas.length > 0) {
+      res.status(200).json(reservas);
+    } else {
+      res.status(404).json({ error: "No existen reservas para esta cancha" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener las reservas", error });
+  }
+};
+
+export const obtenerReservasPorYear = async (req, res) => {
+  const { year } = req.params;
+  console.log(year);
+  try {
+    // Busca strings que terminen con el año
+    const reservas = await Reserva.find({
+      fecha: {
+        $regex: `^\\d{2}/\\d{2}/${year}$`,
+      },
+    });
+    if (reservas.length > 0) {
+      res.status(200).json(reservas);
+    } else {
+      res.status(404).json({ error: "No existen reservas para este año" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener las reservas", error });
+  }
+};
+
 export const nuevaReserva = async (req, res) => {
   const { id_cancha, fecha, hora_inicio, id_usuario } = req.body;
 

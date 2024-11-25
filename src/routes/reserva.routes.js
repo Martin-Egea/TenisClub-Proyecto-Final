@@ -4,6 +4,9 @@ import {
   obtenerReservas,
   obtenerReservasPorCancha,
   nuevaReserva,
+  eliminarReserva,
+  obtenerReservasPorFechaEIdCancha,
+  obtenerReservasPorYear,
 } from "../controllers/reserva.controller.js";
 
 const router = Router();
@@ -14,6 +17,17 @@ router.get(
   authRequired,
   obtenerReservasPorCancha
 );
+router.post(
+  "/obtenerReservasXFechaYCancha/",
+  authRequired,
+  obtenerReservasPorFechaEIdCancha
+);
+router.get(
+  "/obtenerReservasPorYear/:year",
+  authRequired,
+  obtenerReservasPorYear
+);
 router.post("/nuevaReserva", authRequired, nuevaReserva);
+router.delete("/eliminarReserva/:id", authRequired, eliminarReserva);
 
 export default router;

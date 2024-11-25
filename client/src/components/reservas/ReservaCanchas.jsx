@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
-import { format } from "date-fns";
+import { useState, useEffect, useCallback } from "react";
+import { format, parse } from "date-fns";
 import { es } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,69 +11,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useReserva } from "@/context/ReservaContext";
+import { useUser } from "@/context/UserContext";
 
-// Simulamos una función para obtener las canchas desde MongoDB
-const getCourts = async () => {
-  // Aquí deberías hacer una llamada a tu API para obtener las canchas reales de MongoDB
-  return [
-    {
-      _id: "67411b087eac71a15b7ce0c7",
-      nombre: "Cancha 1",
-      __v: 0,
-    },
-    {
-      _id: "67411b977eac71a15b7ce0c9",
-      nombre: "Cancha 2",
-      __v: 0,
-    },
-    {
-      _id: "674123837eac71a15b7ce0cc",
-      nombre: "Cancha 3",
-      __v: 0,
-    },
-    {
-      _id: "6741238a7eac71a15b7ce0ce",
-      nombre: "Cancha 4",
-      __v: 0,
-    },
-    {
-      _id: "6741238e7eac71a15b7ce0d0",
-      nombre: "Cancha 5",
-      __v: 0,
-    },
-    {
-      _id: "674123947eac71a15b7ce0d2",
-      nombre: "Cancha 6",
-      __v: 0,
-    },
-    {
-      _id: "674123977eac71a15b7ce0d4",
-      nombre: "Cancha 7",
-      __v: 0,
-    },
-  ];
-};
-
-// Simulamos una función para obtener las reservas
-const getReservations = async (date, courtId) => {
-  // Aquí deberías hacer una llamada a tu API para obtener las reservas reales de MongoDB
-  return [
-    {
-      id_reserva: 1,
-      _id: courtId,
-      fecha: format(date, "yyyy-MM-dd"),
-      hora_inicio: "10:00",
-    },
-    {
-      id_reserva: 2,
-      _id: courtId,
-      fecha: format(date, "yyyy-MM-dd"),
-      hora_inicio: "14:00",
-    },
-  ];
-};
-
-const timeSlots = [
+const horariosDisponibles = [
   "08:00",
   "09:00",
   "10:00",
@@ -94,50 +43,121 @@ const timeSlots = [
 export function ReservaCanchas({ active }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [courts, setCourts] = useState([]);
-  const [reservations, setReservations] = useState({});
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedReservation, setSelectedReservation] = useState(null);
+  const [previousYear, setPreviousYear] = useState(null);
+  const [reserveAllCompleted, setReserveAllCompleted] = useState(false);
 
+  const {
+    canchas,
+    obtenerTodasLasCanchas,
+    obtenerTodasLasReservasDelAnio,
+    reservas,
+    crearNuevaReserva,
+  } = useReserva();
+  const { user } = useUser();
+
+  // Cargar y actualizar la lista de canchas cuando cambian
   useEffect(() => {
-    const fetchCourts = async () => {
-      const courtsData = await getCourts();
-      setCourts(courtsData);
-    };
-    fetchCourts();
+    if (courts.length === 0) {
+      obtenerTodasLasCanchas();
+      setCourts(canchas);
+    }
+  }, [courts, obtenerTodasLasCanchas, canchas]);
+
+  // Actualizar las reservaciones cuando cambia el año
+  useEffect(() => {
+    const year = selectedDate.getFullYear();
+    if (year !== previousYear) {
+      obtenerTodasLasReservasDelAnio(year);
+      setPreviousYear(year);
+    }
+    setReserveAllCompleted(false);
+  }, [
+    selectedDate,
+    obtenerTodasLasReservasDelAnio,
+    previousYear,
+    reserveAllCompleted,
+  ]);
+
+  const handleDateSelect = useCallback((date) => {
+    setSelectedDate(date);
   }, []);
 
-  useEffect(() => {
-    const fetchReservations = async () => {
-      const reservationsMap = {};
-      for (const court of courts) {
-        const res = await getReservations(selectedDate, court._id);
-        reservationsMap[court._id] = res;
-      }
-      setReservations(reservationsMap);
-    };
-    if (courts.length > 0) {
-      fetchReservations();
+  const handleReservationClick = useCallback((courtId, time) => {
+    setSelectedReservation({ courtId, time });
+    setIsDialogOpen(true);
+  }, []);
+
+  // Lógica para confirmar la reserva
+  const handleReservationConfirm = useCallback(() => {
+    if (selectedReservation) {
+      const nuevaReserva = {
+        id_cancha: selectedReservation.courtId,
+        fecha: format(selectedDate, "dd/MM/yyyy"),
+        hora_inicio: selectedReservation.time,
+        id_usuario: user.id,
+      };
+      //console.log(nuevaReserva);
+      crearNuevaReserva(nuevaReserva);
+
+      setIsDialogOpen(false);
+      setSelectedReservation(null);
+      // Actualizar las reservaciones después de confirmar la reserva.
+      obtenerTodasLasReservasDelAnio(selectedDate.getFullYear());
     }
-  }, [selectedDate, courts]);
+  }, [
+    selectedReservation,
+    selectedDate,
+    obtenerTodasLasReservasDelAnio,
+    crearNuevaReserva,
+    user.id,
+  ]);
 
-  const handleReservation = (courtId, time) => {
-    // Aquí deberías implementar la lógica para crear una nueva reserva en MongoDB
-    console.log(
-      `Reserva realizada para la cancha ${courtId} el ${format(
-        selectedDate,
-        "dd/MM/yyyy"
-      )} a las ${time}`
-    );
-  };
+  // Lógica para verificar si una hora ya esta reservada
+  const isReserved = useCallback(
+    (courtId, time) => {
+      const formattedDate = format(selectedDate, "dd/MM/yyyy");
+      const reserved = reservas.some((r) => {
+        const reservaDate = parse(r.fecha, "dd/MM/yyyy", new Date());
+        return (
+          r.id_cancha === courtId &&
+          format(reservaDate, "dd/MM/yyyy") === formattedDate &&
+          r.hora_inicio === time
+        );
+      });
+      /* console.log(
+        `Verificando reserva: ${courtId}, ${formattedDate}, ${time} - Reservada: ${reserved}`
+      ); */
+      return reserved;
+    },
+    [reservas, selectedDate]
+  );
 
-  const isReserved = (courtId, time) => {
-    return reservations[courtId]?.some((r) => r.hora_inicio === time) || false;
-  };
-
-  const handleReserveAll = (courtId) => {
-    // Implementar lógica para reservar todos los horarios disponibles en MongoDB
-    console.log(
-      `Reservando todos los horarios disponibles para la cancha ${courtId}`
-    );
-  };
+  // Lógica para reservar todos los horarios
+  const handleReserveAll = useCallback(
+    (courtId) => {
+      // Implementar lógica para reservar todos los horarios disponibles en MongoDB
+      for (const horarios of horariosDisponibles) {
+        const nuevaReserva = {
+          id_cancha: courtId,
+          fecha: format(selectedDate, "dd/MM/yyyy"),
+          hora_inicio: horarios,
+          id_usuario: user.id,
+        };
+        //console.log(nuevaReserva);
+        crearNuevaReserva(nuevaReserva);
+      }
+      setReserveAllCompleted(true);
+      // Después de reservar todos, actualizamos las reservaciones
+      obtenerTodasLasReservasDelAnio(selectedDate.getFullYear());
+    },
+    [obtenerTodasLasReservasDelAnio, selectedDate, crearNuevaReserva, user.id]
+  );
+  // Mostrar las reservas actuales
+  /* useEffect(() => {
+    console.log("Reservas actuales:", reservas);
+  }, [reservas]); */
 
   if (!active) return null;
 
@@ -147,12 +167,12 @@ export function ReservaCanchas({ active }) {
         ${active ? "" : "hidden"} `}
     >
       <div className="w-full  mx-auto mr-3">
-        <div className="mb-3 mt-6 flex justify-center items-center animate-fade-down">
+        <div className="mb-3 mt-4 flex justify-center items-center sticky top-4 z-50 animate-fade-down">
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant={"outline"}
-                className={`w-[280px] justify-start text-left font-normal ${
+                className={`w-[280px] justify-start text-left border border-gray-400 font-semibold shadow-xl ${
                   !selectedDate ? "text-muted-foreground" : ""
                 }`}
               >
@@ -173,7 +193,7 @@ export function ReservaCanchas({ active }) {
                   </span>
                 )}
                 selected={selectedDate}
-                onSelect={setSelectedDate}
+                onSelect={handleDateSelect}
                 initialFocus
               />
             </PopoverContent>
@@ -182,24 +202,24 @@ export function ReservaCanchas({ active }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fade-up">
           {courts.map((court) => (
             <Card key={court._id}>
-              <CardHeader className="p-4">
+              <CardHeader className="p-4 pb-0">
                 <CardTitle className="text-2xl font-semibold text-center p-0">
                   {court.nombre}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6">
+              <CardContent className="p-4 pt-3">
                 <div className="aspect-video relative overflow-hidden rounded-lg mb-4">
                   <img
                     src="/Cancha-Tenis.png"
                     alt={`Cancha ${court.nombre}`}
-                    className="absolute inset-0 w-full h-full object-contain rounded-xl transform rotate-[-90deg]"
+                    className="absolute inset-0 w-full h-full object-contain rounded-md transform"
                   />
                 </div>
                 <div className="grid grid-cols-3 gap-2">
-                  {timeSlots.map((time) => (
+                  {horariosDisponibles.map((time) => (
                     <Button
                       key={time}
-                      onClick={() => handleReservation(court._id, time)}
+                      onClick={() => handleReservationClick(court._id, time)}
                       disabled={isReserved(court._id, time)}
                       variant={
                         isReserved(court._id, time)
@@ -208,8 +228,8 @@ export function ReservaCanchas({ active }) {
                       }
                       className={
                         isReserved(court._id, time)
-                          ? "w-full border border-red-300"
-                          : "w-full border border-green-300 bg-green-100"
+                          ? "w-full border border-red-900"
+                          : "w-full border border-green-300 bg-green-100 hover:bg-green-300"
                       }
                     >
                       {time}
@@ -217,7 +237,9 @@ export function ReservaCanchas({ active }) {
                   ))}
                 </div>
                 <Button
-                  className="w-full bg-orange-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-orange-700"
+                  className={`w-full bg-orange-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-orange-700 ${
+                    user.rol_usuario !== 2 && "hidden"
+                  }`}
                   variant="default"
                   onClick={() => handleReserveAll(court._id)}
                 >
@@ -227,6 +249,40 @@ export function ReservaCanchas({ active }) {
             </Card>
           ))}
         </div>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Confirmar Reserva</DialogTitle>
+              <DialogDescription>
+                ¿Estás seguro que deseas reservar este horario?
+              </DialogDescription>
+            </DialogHeader>
+            {selectedReservation && (
+              <div className="py-4">
+                <p>Fecha: {format(selectedDate, "PPP", { locale: es })}</p>
+                <p>
+                  Cancha:{" "}
+                  {
+                    courts.find((c) => c._id === selectedReservation.courtId)
+                      ?.nombre
+                  }
+                </p>
+                <p>Horario: {selectedReservation.time}</p>
+              </div>
+            )}
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                Cancelar
+              </Button>
+              <Button
+                className="bg-green-400 text-slate-950 px-4 rounded-md hover:bg-green-500"
+                onClick={handleReservationConfirm}
+              >
+                Confirmar Reserva
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

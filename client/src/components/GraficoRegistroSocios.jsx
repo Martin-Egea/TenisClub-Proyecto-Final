@@ -71,7 +71,7 @@ export default function GraficoRegistroSocios({ active }) {
     >
       <Card className="w-full max-w-3xl shadow-xl">
         <CardHeader>
-          <CardTitle>Registro de Socios por Mes</CardTitle>
+          <CardTitle>Registro de Socios por mes</CardTitle>
           <CardDescription>
             Suma de importes de cuotas sociales registradas en el año actual
           </CardDescription>
