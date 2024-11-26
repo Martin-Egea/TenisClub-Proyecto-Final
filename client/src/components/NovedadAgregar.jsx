@@ -3,12 +3,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useUser } from "../context/UserContext";
 
 // eslint-disable-next-line react/prop-types
 export default function BarraNovedades({ active }) {
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [imagenUrl, setImagenUrl] = useState("");
+
+  const { createNovedad } = useUser();
 
   const handleImagenChange = (e) => {
     const file = e.target.files[0];
@@ -24,7 +27,17 @@ export default function BarraNovedades({ active }) {
   // lógica para guardar o procesar la nueva novedad
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ titulo, descripcion, imagenUrl });
+    // creo un objeto FormData para enviar la imagen
+    const formData = new FormData();
+    formData.append("titulo", titulo);
+    formData.append("descripcion", descripcion);
+    formData.append("imagen", imagenUrl);
+
+    createNovedad(formData);
+
+    setTitulo("");
+    setDescripcion("");
+    setImagenUrl("");
   };
 
   return (

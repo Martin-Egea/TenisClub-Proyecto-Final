@@ -17,21 +17,31 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { X } from "lucide-react";
+import { X, Eye } from "lucide-react";
 
 export default function NovedadCard({
+  id,
   titulo,
   descripcion,
   imagen,
   isAdmin = false,
   onDelete,
+  clicks,
+  onClickIncrement,
   active,
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleDelete = (e) => {
     e.stopPropagation();
-    onDelete();
+    onDelete(id);
+  };
+
+  const handleCardClick = () => {
+    if (!isOpen) {
+      setIsOpen(true);
+      onClickIncrement(id);
+    }
   };
 
   // si el componente no esta activo, no mostrar nada
@@ -48,7 +58,7 @@ export default function NovedadCard({
       >
         <Card
           className="w-full max-w-sm cursor-pointer transform hover:scale-105 transition-all duration-300 hover:shadow-2xl animate-fade"
-          onClick={() => setIsOpen(true)}
+          onClick={handleCardClick}
         >
           <CardHeader>
             <CardTitle>{titulo}</CardTitle>
@@ -64,7 +74,11 @@ export default function NovedadCard({
             </CardDescription>
           </CardContent>
           {isAdmin && (
-            <CardFooter className="justify-end">
+            <CardFooter className="justify-between">
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Eye className="w-4 h-4 mr-1" />
+                {clicks} {clicks === 1 ? "vista" : "vistas"}
+              </div>
               <Button variant="destructive" size="sm" onClick={handleDelete}>
                 <X className="w-4 h-4 mr-2" /> Eliminar
               </Button>

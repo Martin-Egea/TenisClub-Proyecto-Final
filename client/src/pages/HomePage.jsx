@@ -25,8 +25,17 @@ import { ReservasDeUsuario } from "@/components/reservas/ReservaDeUsuario";
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("Novedades");
-  const { user, getAllUsers, getAllCuotasSociales } = useUser();
   const [logged, setLogged] = useState(false);
+
+  const {
+    user,
+    getAllUsers,
+    getAllCuotasSociales,
+    obtenerTodasLasNovedades,
+    novedades,
+    deleteNovedad,
+    contarVistasNovedades,
+  } = useUser();
 
   //Actualizar los estados de los socios despues del login
   useEffect(() => {
@@ -34,8 +43,16 @@ export default function HomePage() {
       getAllUsers();
       getAllCuotasSociales();
       setLogged(true);
+      obtenerTodasLasNovedades();
     }
-  }, [user, getAllUsers, getAllCuotasSociales, logged]);
+  }, [
+    user,
+    getAllUsers,
+    getAllCuotasSociales,
+    logged,
+    obtenerTodasLasNovedades,
+    novedades,
+  ]);
 
   const handleItemClick = (item) => {
     setActiveItem(item);
@@ -115,27 +132,20 @@ export default function HomePage() {
         />
       )}
       <div className="flex flex-wrap gap-4 mt-5 justify-center">
-        <NovedadCard
-          titulo="Novedad 1"
-          descripcion="ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates."
-          imagen="https://lh4.googleusercontent.com/proxy/5_ILxH5Sn1iKQsa4IAxWW5vkKTtqrwOhplNjUVbtk8CN2_DKnEvUYeyaJT3uYzRDwMUhzcquqhEbg5DH1huqrW20ArEoeX3TO3UN1L01wy8T69A2llKczzGEtqiZ477Rc7_lC-OYZ6RhopxiEF_HGj4XofLJYHICam48Gw"
-          isAdmin={user.rol_usuario === 2}
-          active={activeItem === "Novedades"}
-        />
-        <NovedadCard
-          titulo="Novedad 2"
-          descripcion="ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates."
-          imagen="https://services.meteored.com/img/article/torneio-de-tenis-us-open-em-nova-iorque-reajusta-se-aos-novos-desafios-impostos-pelas-alteracoes-climaticas-1724693275614_512.jpeg"
-          isAdmin={user.rol_usuario === 2}
-          active={activeItem === "Novedades"}
-        />
-        <NovedadCard
-          titulo="Novedad 3"
-          descripcion="ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates."
-          imagen="https://www.superprof.com.ar/blog/wp-content/uploads/2024/01/pexels-dmytro-2694942.jpg"
-          isAdmin={user.rol_usuario === 2}
-          active={activeItem === "Novedades"}
-        />
+        {novedades.map((novedad) => (
+          <NovedadCard
+            key={novedad._id}
+            id={novedad._id}
+            titulo={novedad.titulo}
+            descripcion={novedad.descripcion}
+            imagen={novedad.imagen}
+            isAdmin={user.rol_usuario === 2}
+            onDelete={deleteNovedad}
+            clicks={novedad.clicks}
+            onClickIncrement={contarVistasNovedades}
+            active={activeItem === "Novedades"}
+          />
+        ))}
       </div>
 
       <Payment active={activeItem === "Pagos"} />

@@ -14,6 +14,12 @@ import {
   eliminarCuotaSocial,
 } from "../api/cuotaSocial.api.js";
 import { loginOrRegister } from "../api/googleAuth.api.js";
+import {
+  crearNovedad,
+  obtenerNovedades,
+  eliminarNovedad,
+  contarClicks,
+} from "../api/novedad.api.js";
 import Cookies from "js-cookie";
 
 export const UserContext = createContext();
@@ -32,6 +38,7 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [allUsers, setAllUsers] = useState([]);
   const [cuotasSociales, setCuotasSociales] = useState([]);
+  const [novedades, setNovedades] = useState([]);
 
   const googleLoginOrRegister = async (user) => {
     try {
@@ -109,6 +116,27 @@ export const UserProvider = ({ children }) => {
     await eliminarCuotaSocial(id);
   };
 
+  const createNovedad = async (novedad) => {
+    await crearNovedad(novedad);
+    obtenerTodasLasNovedades();
+  };
+
+  const obtenerTodasLasNovedades = async () => {
+    const res = await obtenerNovedades();
+    setNovedades(res.data);
+  };
+
+  const deleteNovedad = async (id) => {
+    await eliminarNovedad(id);
+    novedades.filter((novedad) => novedad._id !== id);
+    obtenerTodasLasNovedades();
+  };
+
+  const contarVistasNovedades = async (id) => {
+    await contarClicks(id);
+    obtenerTodasLasNovedades();
+  };
+
   //limpiar los errores de validación
   useEffect(() => {
     if (errors.length > 0) {
@@ -168,11 +196,16 @@ export const UserProvider = ({ children }) => {
         errors,
         allUsers,
         cuotasSociales,
+        novedades,
         getAllUsers,
         updateUser,
         setCuotasSociales,
         getAllCuotasSociales,
         deleteCuotaSocial,
+        createNovedad,
+        obtenerTodasLasNovedades,
+        deleteNovedad,
+        contarVistasNovedades,
       }}
     >
       {children}

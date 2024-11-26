@@ -4,7 +4,7 @@ import { BriefcaseBusiness, Github, Mail, Smartphone } from "lucide-react";
 export const DeveloperContact = ({ active }) => {
   return (
     <div
-      className={`flex justify-center items-center animate-fade-left
+      className={`flex justify-center items-center h-screen animate-fade-left
         ${active ? "" : "hidden"} `}
     >
       <div className="flex justify-center items-center">
