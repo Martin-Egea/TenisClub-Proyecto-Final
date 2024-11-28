@@ -22,6 +22,9 @@ import { Toaster } from "@/components/ui/toaster";
 import DeveloperContact from "@/components/ContactoDesarrollador";
 import { ReservaCanchas } from "@/components/reservas/ReservaCanchas";
 import { ReservasDeUsuario } from "@/components/reservas/ReservaDeUsuario";
+import { GraficoSociosXmes } from "@/components/recaudacion/GraficoSociosXmes";
+import { GraficoOcupacionCanchas } from "@/components/recaudacion/GraficoOcupacionCanchas";
+import { GraficoReservasXmes } from "@/components/recaudacion/GraficoReservasXmes";
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("Novedades");
@@ -118,20 +121,21 @@ export default function HomePage() {
 
       {/* visualización de elementos de navegacion */}
 
-      <ReservasDeUsuario
-        usuarioId={user.id}
-        active={activeItem === "Reservas"}
-      />
-
-      <ReservaCanchas active={activeItem === "Reservas"} />
-
+      {/* NOVEDADES */}
       {user.rol_usuario === 2 && (
         <BarraNovedades
           usuarioId={user.id}
           active={activeItem === "Novedades"}
         />
       )}
-      <div className="flex flex-wrap gap-4 mt-5 justify-center">
+      {/* renderizado condicional para que no se apliquen estilos si no esta seleccionado la opcion */}
+      <div
+        className={
+          activeItem === "Novedades"
+            ? "flex flex-wrap gap-4 mt-5 justify-center"
+            : "hidden"
+        }
+      >
         {novedades.map((novedad) => (
           <NovedadCard
             key={novedad._id}
@@ -148,16 +152,35 @@ export default function HomePage() {
         ))}
       </div>
 
+      {/* RESERVAS */}
+      <ReservasDeUsuario
+        usuarioId={user.id}
+        active={activeItem === "Reservas"}
+      />
+      <ReservaCanchas active={activeItem === "Reservas"} />
+
+      {/* SOCIOS */}
+      <TablaSocios active={activeItem === "Socios"} />
+
+      {/* RECAUDACION */}
+      <GraficoRegistroSocios active={activeItem === "Recaudación"} />
+      <div className="flex flex-wrap justify-center">
+        <div className="md:flex md:justify-center grid grid-cols-1">
+          <GraficoSociosXmes active={activeItem === "Recaudación"} />
+          <GraficoReservasXmes active={activeItem === "Recaudación"} />
+        </div>
+        <div className="md:flex md:justify-center sm:flex-row-reverse grid grid-cols-1">
+          <GraficoOcupacionCanchas active={activeItem === "Recaudación"} />
+          <TablaRevisionPagos active={activeItem === "Recaudación"} />
+        </div>
+      </div>
+
+      {/* PAGOS */}
       <Payment active={activeItem === "Pagos"} />
       <CuotaConfirmadaDeSocios active={activeItem === "Pagos"} />
 
-      <TablaSocios active={activeItem === "Socios"} />
-
-      <GraficoRegistroSocios active={activeItem === "Recaudación"} />
-      <TablaRevisionPagos active={activeItem === "Recaudación"} />
-
+      {/* MI PERFIL Y CONTACTO */}
       <MiPerfilFormulario active={activeItem === "Mi Perfil"} />
-
       <DeveloperContact active={activeItem === "Contacto"} />
 
       <Toaster />

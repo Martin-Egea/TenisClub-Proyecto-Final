@@ -82,9 +82,13 @@ export function ReservasDeUsuario({ usuarioId, active }) {
       className={`flex justify-center items-center sticky top-0 z-30
         ${active ? "" : "hidden"} `}
     >
-      <div className="w-screen -ml-8 pl-3  bg-background shadow-md animate-fade-down">
-        <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
-          <div className="flex items-center justify-between px-4 py-2">
+      <div className="w-screen -ml-8 pl-3 shadow-md animate-fade-down bg-white bg-opacity-70 ">
+        <Collapsible
+          open={isOpen}
+          onOpenChange={setIsOpen}
+          className="w-full bg-opacity-50 animate-fade-down"
+        >
+          <div className="flex items-center justify-between bg-white px-4 py-2">
             <h2 className="text-lg font-semibold">Mis Turnos</h2>
             <CollapsibleTrigger asChild>
               <Button variant="outline" size="sm">
@@ -102,13 +106,13 @@ export function ReservasDeUsuario({ usuarioId, active }) {
               </Button>
             </CollapsibleTrigger>
           </div>
-          <CollapsibleContent className="">
+          <CollapsibleContent className=" animate-fade-down">
             <ScrollArea className="h-[300px] w-full rounded-md border p-4 ">
               {misReservas.length > 0 ? (
                 misReservas.map((reserva) => (
                   <Card
                     key={reserva._id}
-                    className="mb-4 md:flex justify-between items-end"
+                    className="mb-4 md:flex justify-between items-end "
                   >
                     <CardHeader>
                       <CardTitle className="text-xl">

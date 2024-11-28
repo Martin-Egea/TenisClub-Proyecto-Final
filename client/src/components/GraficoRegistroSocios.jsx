@@ -65,19 +65,21 @@ export default function GraficoRegistroSocios({ active }) {
 
   return (
     <div
-      className={`flex justify-center items-center mx-auto p-4 min-h-[250px] min-w-[250px] animate-fade-left 
+      className={`flex justify-center items-center md:min-w-[600px] md:min-h-[400px] p-4 animate-fade-left 
         ${active ? "" : "hidden"} `}
-      style={{ minWidth: 600, minHeight: 600 }}
+      style={{ minWidth: 300, minHeight: 300 }}
     >
       <Card className="w-full max-w-3xl shadow-xl">
-        <CardHeader>
+        <CardHeader className="p-3 md:p-6">
           <CardTitle>Registro de Socios por mes</CardTitle>
           <CardDescription>
-            Suma de importes de cuotas sociales registradas en el año actual
+            Suma de importes de cuotas sociales registradas en el año{" "}
+            {new Date().getFullYear()}
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0 md:p-6 font-bold">
           <ChartContainer
+            className="p-0"
             config={{
               total: {
                 label: "Total de Cuotas",
@@ -88,7 +90,7 @@ export default function GraficoRegistroSocios({ active }) {
             {active && datosProcesados.length > 0 && (
               <BarChart
                 data={datosProcesados}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                margin={{ top: 20, right: 10, left: 10, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis

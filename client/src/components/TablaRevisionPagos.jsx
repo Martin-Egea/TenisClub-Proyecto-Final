@@ -65,7 +65,7 @@ export default function TablaRevisionPagos({ active }) {
       className={`flex justify-center items-center animate-fade-up 
         ${active ? "" : "hidden"} `}
     >
-      <Card className="shadow-xl mt-3 min-w-[500px]">
+      <Card className="shadow-xl mt-3 mr-3 w-[300px] md:min-w-fit">
         <CardHeader>
           <CardTitle className="text-center text-xl">
             Lista de usuarios sin revisar
