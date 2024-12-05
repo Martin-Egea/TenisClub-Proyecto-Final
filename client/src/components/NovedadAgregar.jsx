@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useUser } from "../context/UserContext";
+import { Textarea } from "./ui/textarea";
 
 // eslint-disable-next-line react/prop-types
 export default function BarraNovedades({ active }) {
@@ -45,7 +46,7 @@ export default function BarraNovedades({ active }) {
       className={`flex justify-center items-center mt-3 mr-3 animate-fade-down
         ${active ? "" : "hidden"} `}
     >
-      <Card className="w-full pt-3 overflow-hidden">
+      <Card className="md:w-3/4 pt-3 overflow-hidden">
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -73,7 +74,7 @@ export default function BarraNovedades({ active }) {
             </div>
             <div className="">
               <Label htmlFor="descripcion">Descripción</Label>
-              <Input
+              <Textarea
                 id="descripcion"
                 value={descripcion}
                 onChange={(e) => setDescripcion(e.target.value)}
@@ -94,7 +95,7 @@ export default function BarraNovedades({ active }) {
             <div className="flex justify-center">
               <Button
                 type="submit"
-                className="w-5/12 font-bold bg-orange-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-orange-700"
+                className="w-6/12 md:w-5/12 font-bold bg-orange-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-orange-700"
               >
                 Agregar Novedad
               </Button>

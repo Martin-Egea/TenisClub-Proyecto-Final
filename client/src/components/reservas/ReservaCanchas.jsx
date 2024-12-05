@@ -203,18 +203,18 @@ export function ReservaCanchas({ active }) {
           {courts.map((court) => (
             <Card key={court._id}>
               <CardHeader className="p-4 pb-0">
-                <CardTitle className="text-2xl font-semibold text-center p-0">
+                <CardTitle className="text-2xl font-semibold bg-gray-100 rounded-lg text-center p-0">
                   {court.nombre}
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-4 pt-3">
-                <div className="aspect-video relative overflow-hidden rounded-lg mb-4">
+                {/* <div className="aspect-video relative overflow-hidden rounded-lg mb-4">
                   <img
                     src="/Cancha-Tenis.png"
                     alt={`Cancha ${court.nombre}`}
                     className="absolute inset-0 w-full h-full object-contain rounded-md transform"
                   />
-                </div>
+                </div> */}
                 <div className="grid grid-cols-3 gap-2">
                   {horariosDisponibles.map((time) => (
                     <Button

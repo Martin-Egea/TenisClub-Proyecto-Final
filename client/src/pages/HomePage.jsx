@@ -122,6 +122,13 @@ export default function HomePage() {
       {/* visualización de elementos de navegacion */}
 
       {/* NOVEDADES */}
+      <h2
+        className={`text-lg font-semibold bg-white pl-9 py-3 mb-4 w-screen animate-fade-down ${
+          activeItem === "Novedades" ? "" : "hidden"
+        }`}
+      >
+        Novedades
+      </h2>
       {user.rol_usuario === 2 && (
         <BarraNovedades
           usuarioId={user.id}
@@ -160,9 +167,24 @@ export default function HomePage() {
       <ReservaCanchas active={activeItem === "Reservas"} />
 
       {/* SOCIOS */}
+      <h2
+        className={`text-lg font-semibold bg-white pl-9 py-3 mb-4 w-screen animate-fade-down ${
+          activeItem === "Socios" ? "" : "hidden"
+        }`}
+      >
+        Socios
+      </h2>
+
       <TablaSocios active={activeItem === "Socios"} />
 
       {/* RECAUDACION */}
+      <h2
+        className={`text-lg font-semibold bg-white pl-9 py-3 mb-4 w-screen animate-fade-down ${
+          activeItem === "Recaudación" ? "" : "hidden"
+        }`}
+      >
+        Recaudación
+      </h2>
       <GraficoRegistroSocios active={activeItem === "Recaudación"} />
       <div className="flex flex-wrap justify-center">
         <div className="md:flex md:justify-center grid grid-cols-1">
@@ -176,10 +198,18 @@ export default function HomePage() {
       </div>
 
       {/* PAGOS */}
+      <h2
+        className={`text-lg font-semibold bg-white pl-9 py-3 mb-4 w-screen animate-fade-down ${
+          activeItem === "Pagos" ? "" : "hidden"
+        }`}
+      >
+        Pagos
+      </h2>
       <Payment active={activeItem === "Pagos"} />
       <CuotaConfirmadaDeSocios active={activeItem === "Pagos"} />
 
       {/* MI PERFIL Y CONTACTO */}
+
       <MiPerfilFormulario active={activeItem === "Mi Perfil"} />
       <DeveloperContact active={activeItem === "Contacto"} />
 

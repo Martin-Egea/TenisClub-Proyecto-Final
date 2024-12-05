@@ -86,7 +86,7 @@ export function ReservasDeUsuario({ usuarioId, active }) {
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
-          className="w-full bg-opacity-50 animate-fade-down"
+          className="w-full bg-opacity-50"
         >
           <div className="flex items-center justify-between bg-white px-4 py-2">
             <h2 className="text-lg font-semibold">Mis Turnos</h2>
@@ -106,7 +106,7 @@ export function ReservasDeUsuario({ usuarioId, active }) {
               </Button>
             </CollapsibleTrigger>
           </div>
-          <CollapsibleContent className=" animate-fade-down">
+          <CollapsibleContent className="">
             <ScrollArea className="h-[300px] w-full rounded-md border p-4 ">
               {misReservas.length > 0 ? (
                 misReservas.map((reserva) => (

@@ -27,16 +27,16 @@ export function CuotaConfirmadaDeSocios({ active }) {
   return (
     <div className="flex items-center justify-center">
       <div
-        className={`mr-3 rounded-lg bg-white animate-fade-up max-w-[600px] min-w-[200px] shadow-xl
+        className={`mr-3 rounded-lg bg-white animate-fade-up max-w-[600px] min-w-[200px] md:min-w-[535px] shadow-xl
     ${active ? "" : "hidden"} `}
       >
         <Table>
           <TableCaption>Lista de Cuotas Sociales Revisadas</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead>Mes</TableHead>
-              <TableHead className="text-center">Importe</TableHead>
-              <TableHead className="text-center">Revisado</TableHead>
+              <TableHead className="font-bold">Mes</TableHead>
+              <TableHead className="font-bold text-center">Importe</TableHead>
+              <TableHead className="font-bold text-center">Revisado</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

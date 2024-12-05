@@ -132,7 +132,7 @@ export function GraficoOcupacionCanchas({ active }) {
             Total de reservas: {totalReservas}
           </div>
           <div className="leading-none text-muted-foreground">
-            Mostrando distribución de reservas por cancha
+            Distribución de reservas por cancha
           </div>
         </CardFooter>
       </Card>

@@ -42,7 +42,7 @@ function contarReservasPorMes(reservas, meses) {
     (acc, reserva) => {
       // Extraemos el mes del campo 'fecha' (formato dd/mm/yyyy)
       // eslint-disable-next-line no-unused-vars
-      const [_, mes, __] = reserva.fecha.split("/"); // Segundo elemento es el mes
+      const [_, mes, __] = reserva.fecha.split("/");
 
       // Convertimos el mes a índice (0 para enero, 11 para diciembre)
       const mesIndex = parseInt(mes, 10) - 1;

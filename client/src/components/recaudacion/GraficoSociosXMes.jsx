@@ -65,7 +65,7 @@ const datosDeCuotasProcesadas = (cuotasSociales, allUsers) => {
     meses.forEach((mes) => {
       const cuotasMes = cuotasPorUsuario.get(user._id)?.[mes] || [];
 
-      // Verificar si el usuario tiene cuotas revisadas y con importe válido
+      // Verificar si el usuario tiene cuotas revisadas y con un importe válido
       const tieneCuotaValida = cuotasMes.some(
         (cuota) => cuota.revisado && Number(cuota.importe) > 0
       );
@@ -73,7 +73,7 @@ const datosDeCuotasProcesadas = (cuotasSociales, allUsers) => {
       if (tieneCuotaValida) {
         result[mes].socios += 1;
       } else {
-        // Considerar usuarios que no abonaron o no revisados
+        // Considerar usuarios que no abonaron o no fueron revisados
         result[mes].usuarios += 1;
       }
     });
