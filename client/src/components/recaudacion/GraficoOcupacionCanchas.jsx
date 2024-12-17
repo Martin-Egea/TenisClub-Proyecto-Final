@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { Pie, PieChart } from "recharts";
+import { useMediaQuery } from "react-responsive";
 
 import {
   Card,
@@ -22,6 +23,17 @@ export function GraficoOcupacionCanchas({ active }) {
   const [chartData, setChartData] = useState([]);
   const [chartConfig, setChartConfig] = useState({});
   const [totalReservas, setTotalReservas] = useState(0);
+  const [outerRadius, setOuterRadius] = useState(80);
+
+  const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+
+  useEffect(() => {
+    if (isMobile) {
+      setOuterRadius(40);
+    } else {
+      setOuterRadius(80);
+    }
+  }, [isMobile]);
 
   const generateDynamicColor = (index) => {
     const hue = (index * 360) / canchas.length; // Espaciado uniforme de colores
@@ -78,17 +90,17 @@ export function GraficoOcupacionCanchas({ active }) {
       className={`flex justify-center items-center mx-auto p-4 animate-fade-left 
       ${active ? "" : "hidden"} `}
     >
-      <Card className="flex flex-col">
+      <Card className="flex flex-col md:min-w-[400px] md:min-h-[400px] min-h-[400px]">
         <CardHeader className="items-center pb-0">
           <CardTitle>Ocupación de canchas</CardTitle>
           <CardDescription>
             Preferencia de canchas para {new Date().getFullYear()}
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex-1 pb-0">
+        <CardContent className="flex-1">
           <ChartContainer
             config={chartConfig}
-            className="mx-auto max-h-[300px] min-w-[410px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+            className="mx-auto pb-0 [&_.recharts-pie-label-text]:fill-foreground "
           >
             <PieChart>
               <ChartTooltip
@@ -102,7 +114,7 @@ export function GraficoOcupacionCanchas({ active }) {
                 data={chartData}
                 dataKey="porcentaje"
                 nameKey="nombre"
-                outerRadius={80}
+                outerRadius={outerRadius}
                 label={({ cx, cy, midAngle, outerRadius, value, name }) => {
                   const RADIAN = Math.PI / 180;
                   // Aumentar el radio para mover la etiqueta hacia afuera
@@ -119,7 +131,9 @@ export function GraficoOcupacionCanchas({ active }) {
                       dominantBaseline="central"
                       className="text-sm font-medium"
                     >
-                      {`${name} ${value}%`}
+                      {`${
+                        isMobile ? name.charAt(0) + " " + name.charAt(7) : name
+                      } - ${value}%`}
                     </text>
                   );
                 }}

@@ -65,12 +65,12 @@ export default function GraficoRegistroSocios({ active }) {
 
   return (
     <div
-      className={`flex justify-center items-center md:min-w-[600px] md:min-h-[400px] p-4 animate-fade-left 
+      className={`flex justify-center items-center mx-auto p-4 animate-fade-left
         ${active ? "" : "hidden"} `}
       style={{ minWidth: 300, minHeight: 300 }}
     >
-      <Card className="w-full max-w-3xl shadow-xl">
-        <CardHeader className="p-3 md:p-6">
+      <Card className="flex flex-col md:min-w-[400px] md:min-h-[400px] md:max-w-[400px]">
+        <CardHeader className="">
           <CardTitle>Registro de Socios por mes</CardTitle>
           <CardDescription>
             Suma de importes de cuotas sociales registradas en el año{" "}

@@ -70,7 +70,7 @@ export function GraficoReservasXmes({ active }) {
       className={`flex justify-center items-center mx-auto p-4 animate-fade-left 
         ${active ? "" : "hidden"} `}
     >
-      <Card className="md:min-w-[400px] mr-3">
+      <Card className="flex flex-col md:min-w-[400px] md:min-h-[400px]">
         <CardHeader>
           <CardTitle>Turnos Reservados por mes</CardTitle>
           <CardDescription>

@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import CuotaConfirmadaDeSocios from "../components/CuotaConfirmadaDeSocios";
 import TablaSocios from "../components/TablaSocios";
-import TablaRevisionPagos from "../components/TablaRevisionPagos";
 import GraficoRegistroSocios from "@/components/GraficoRegistroSocios";
 import { useUser } from "@/context/UserContext";
 import MiPerfilFormulario from "@/components/MiPerfilFormulario";
@@ -25,6 +24,7 @@ import { ReservasDeUsuario } from "@/components/reservas/ReservaDeUsuario";
 import { GraficoSociosXmes } from "@/components/recaudacion/GraficoSociosXmes";
 import { GraficoOcupacionCanchas } from "@/components/recaudacion/GraficoOcupacionCanchas";
 import { GraficoReservasXmes } from "@/components/recaudacion/GraficoReservasXmes";
+import { RecaudacionesMenuSuperior } from "@/components/recaudacion/ListaUsuariosSinRevisar";
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("Novedades");
@@ -123,7 +123,7 @@ export default function HomePage() {
 
       {/* NOVEDADES */}
       <h2
-        className={`text-lg font-semibold bg-white pl-9 py-3 mb-4 w-screen animate-fade-down ${
+        className={`text-lg font-semibold bg-white pl-9 py-3 mb-4 w-screen sticky top-0 z-30 shadow-xl animate-fade-down ${
           activeItem === "Novedades" ? "" : "hidden"
         }`}
       >
@@ -168,7 +168,7 @@ export default function HomePage() {
 
       {/* SOCIOS */}
       <h2
-        className={`text-lg font-semibold bg-white pl-9 py-3 mb-4 w-screen animate-fade-down ${
+        className={`text-lg font-semibold bg-white pl-9 py-3 mb-4 w-screen sticky top-0 z-30 shadow-xl animate-fade-down ${
           activeItem === "Socios" ? "" : "hidden"
         }`}
       >
@@ -178,28 +178,43 @@ export default function HomePage() {
       <TablaSocios active={activeItem === "Socios"} />
 
       {/* RECAUDACION */}
-      <h2
-        className={`text-lg font-semibold bg-white pl-9 py-3 mb-4 w-screen animate-fade-down ${
+      <RecaudacionesMenuSuperior active={activeItem === "Recaudación"} />
+
+      <div
+        className={`flex flex-col items-center ${
           activeItem === "Recaudación" ? "" : "hidden"
         }`}
       >
-        Recaudación
-      </h2>
-      <GraficoRegistroSocios active={activeItem === "Recaudación"} />
-      <div className="flex flex-wrap justify-center">
-        <div className="md:flex md:justify-center grid grid-cols-1">
-          <GraficoSociosXmes active={activeItem === "Recaudación"} />
-          <GraficoReservasXmes active={activeItem === "Recaudación"} />
+        {/* Barra de Socios */}
+        <div className="flex items-center w-full pl-5 -ml-8 my-6 bg-gradient-to-r from-gray-100 via-gray-300 to-transparent animate-fade-right">
+          <span className="text-lg font-medium  mr-4">
+            Información de Socios
+          </span>
+          <div className="h-1 bg-gradient-to-r from-gray-500 via-gray-300 to-transparent w-full"></div>
         </div>
-        <div className="md:flex md:justify-center sm:flex-row-reverse grid grid-cols-1">
+        {/* Gráficos de Socios */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+          <GraficoRegistroSocios active={activeItem === "Recaudación"} />
+          <GraficoSociosXmes active={activeItem === "Recaudación"} />
+        </div>
+
+        {/* Barra de Canchas */}
+        <div className="flex items-center w-full pl-5 -ml-8 my-6 bg-gradient-to-r from-gray-100 via-gray-300 to-transparent animate-fade-right">
+          <span className="text-lg font-medium mr-4">
+            Información de Canchas
+          </span>
+          <div className="h-1 bg-gradient-to-r from-gray-500 via-gray-300 to-transparent w-full"></div>
+        </div>
+        {/* Gráficos de Canchas */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+          <GraficoReservasXmes active={activeItem === "Recaudación"} />
           <GraficoOcupacionCanchas active={activeItem === "Recaudación"} />
-          <TablaRevisionPagos active={activeItem === "Recaudación"} />
         </div>
       </div>
 
       {/* PAGOS */}
       <h2
-        className={`text-lg font-semibold bg-white pl-9 py-3 mb-4 w-screen animate-fade-down ${
+        className={`text-lg font-semibold bg-white pl-9 py-3 mb-4 w-screen sticky top-0 z-30 shadow-xl animate-fade-down ${
           activeItem === "Pagos" ? "" : "hidden"
         }`}
       >

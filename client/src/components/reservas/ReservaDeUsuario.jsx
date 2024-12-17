@@ -88,14 +88,18 @@ export function ReservasDeUsuario({ usuarioId, active }) {
           onOpenChange={setIsOpen}
           className="w-full bg-opacity-50"
         >
-          <div className="flex items-center justify-between bg-white px-4 py-2">
-            <h2 className="text-lg font-semibold">Mis Turnos</h2>
+          <div className="flex items-center justify-between bg-white px-4 py-2 shadow-2xl">
+            <h2 className="text-lg font-semibold ">Mis Turnos</h2>
             <CollapsibleTrigger asChild>
-              <Button variant="outline" size="sm">
+              <Button
+                variant="outline"
+                size="sm"
+                className="border border-gray-400"
+              >
                 {isOpen ? (
                   <>
                     Ocultar
-                    <ChevronUp className="ml-2 h-4 w-4 z-50" />
+                    <ChevronUp className="ml-2 h-4 w-4 z-50 " />
                   </>
                 ) : (
                   <>
@@ -107,7 +111,7 @@ export function ReservasDeUsuario({ usuarioId, active }) {
             </CollapsibleTrigger>
           </div>
           <CollapsibleContent className="">
-            <ScrollArea className="h-[300px] w-full rounded-md border p-4 ">
+            <ScrollArea className="h-[300px] w-full rounded-md border p-4">
               {misReservas.length > 0 ? (
                 misReservas.map((reserva) => (
                   <Card
