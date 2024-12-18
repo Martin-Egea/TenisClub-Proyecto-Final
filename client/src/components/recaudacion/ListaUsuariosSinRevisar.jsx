@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -39,7 +39,25 @@ export function RecaudacionesMenuSuperior({ active }) {
   const [usuariosARevisar, setUsuariosARevisar] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { cuotasSociales, getAllCuotasSociales, getAllUsers } = useUser();
+  const {
+    cuotasSociales,
+    getAllCuotasSociales,
+    getAllUsers,
+    deleteCuotaSocial,
+  } = useUser();
+
+  function filtrarUsuarios() {
+    const usuariosSinRevisar = cuotasSociales.filter(
+      (cuota) => cuota.revisado === false
+    );
+    setUsuariosARevisar(usuariosSinRevisar);
+  }
+  useEffect(() => {
+    const usuariosSinRevisar = cuotasSociales.filter(
+      (cuota) => cuota.revisado === false
+    );
+    setUsuariosARevisar(usuariosSinRevisar);
+  }, [cuotasSociales]);
 
   const handleConfirmarRevision = async (id) => {
     await actualizarEstadoUsuario(id);
@@ -48,15 +66,11 @@ export function RecaudacionesMenuSuperior({ active }) {
   };
 
   const handleCancelarRevision = (id) => {
-    // Implement cancellation logic here
-    console.log("Cancelar revisión para:", id);
+    deleteCuotaSocial(id);
   };
 
   const handleMostrarUsuarios = () => {
-    const usuariosSinRevisar = cuotasSociales.filter(
-      (cuota) => cuota.revisado === false
-    );
-    setUsuariosARevisar(usuariosSinRevisar);
+    filtrarUsuarios();
     setIsOpen(true);
   };
 
@@ -90,7 +104,7 @@ export function RecaudacionesMenuSuperior({ active }) {
             >
               <Card className="w-full border-0 shadow-none">
                 <CardHeader>
-                  <CardTitle>Lista de usuarios sin revisar</CardTitle>
+                  <CardTitle>Lista de usuarios a revisar</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="w-full">

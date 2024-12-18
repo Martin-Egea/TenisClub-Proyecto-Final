@@ -31,7 +31,7 @@ export function GraficoOcupacionCanchas({ active }) {
     if (isMobile) {
       setOuterRadius(40);
     } else {
-      setOuterRadius(80);
+      setOuterRadius(70);
     }
   }, [isMobile]);
 
@@ -132,8 +132,10 @@ export function GraficoOcupacionCanchas({ active }) {
                       className="text-sm font-medium"
                     >
                       {`${
-                        isMobile ? name.charAt(0) + " " + name.charAt(7) : name
-                      } - ${value}%`}
+                        isMobile
+                          ? name.charAt(0) + " " + name.charAt(7) + "-"
+                          : name
+                      } ${value}%`}
                     </text>
                   );
                 }}

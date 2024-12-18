@@ -101,8 +101,7 @@ export const UserProvider = ({ children }) => {
 
   //crear una cuosa social nueva!!!!
   const crearInformePago = async (pago) => {
-    const res = await crearCuotaSocial(pago);
-    console.log(res);
+    await crearCuotaSocial(pago);
   };
 
   //actualizar un usuario
@@ -114,6 +113,7 @@ export const UserProvider = ({ children }) => {
   //eliminar una cuota social
   const deleteCuotaSocial = async (id) => {
     await eliminarCuotaSocial(id);
+    getAllCuotasSociales();
   };
 
   const createNovedad = async (novedad) => {

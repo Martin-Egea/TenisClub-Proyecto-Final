@@ -34,6 +34,7 @@ export default function HomePage() {
     user,
     getAllUsers,
     getAllCuotasSociales,
+    cuotasSociales,
     obtenerTodasLasNovedades,
     novedades,
     deleteNovedad,
@@ -55,6 +56,7 @@ export default function HomePage() {
     logged,
     obtenerTodasLasNovedades,
     novedades,
+    cuotasSociales,
   ]);
 
   const handleItemClick = (item) => {
@@ -70,7 +72,7 @@ export default function HomePage() {
             text="Novedades"
             active={activeItem === "Novedades"}
             onClick={() => handleItemClick("Novedades")}
-            alert
+            alert={novedades.length > 0}
           />
           <SidebarItem
             icon={<CalendarSearch size={20} />}
@@ -92,7 +94,10 @@ export default function HomePage() {
               text="Recaudación"
               active={activeItem === "Recaudación"}
               onClick={() => handleItemClick("Recaudación")}
-              alert
+              alert={
+                cuotasSociales.filter((cuota) => cuota.revisado === false)
+                  .length > 0
+              }
             />
           )}
           <SidebarItem
