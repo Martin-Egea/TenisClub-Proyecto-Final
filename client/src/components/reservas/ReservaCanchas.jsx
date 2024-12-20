@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { format, parse } from "date-fns";
 import { es } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useReserva } from "@/context/ReservaContext";
 import { useUser } from "@/context/UserContext";
+import { enviarMail } from "@/api/mailer.api";
 
 const horariosDisponibles = [
   "08:00",
@@ -58,7 +59,7 @@ export function ReservaCanchas({ active, admin }) {
   const [previousYear, setPreviousYear] = useState(null);
   const [reserveAllCompleted, setReserveAllCompleted] = useState(false);
   const [isAdminDialogOpen, setIsAdminDialogOpen] = useState(false);
-  const [userName, setUserName] = useState("cargando...");
+  const [reservaUsuario, setReservaUsuario] = useState({});
 
   const {
     canchas,
@@ -66,15 +67,27 @@ export function ReservaCanchas({ active, admin }) {
     obtenerTodasLasReservasDelAnio,
     reservas,
     crearNuevaReserva,
+    eliminarUnaReserva,
   } = useReserva();
   const { user, findUserById } = useUser();
+
+  const contenidoMail = useMemo(
+    () => ({
+      email: reservaUsuario.email,
+      subject: "Reserva Cancelada",
+      message: `Hola ${reservaUsuario.nombre} ${reservaUsuario.apellido}, lamentamos informarte que tu reserva ha sido cancelada. Por favor, ponte en contacto con nosotros para más información.`,
+    }),
+    [reservaUsuario.email, reservaUsuario.nombre, reservaUsuario.apellido]
+  );
 
   // Cargar el nombre del usuario de la reserva seleccionada
   useEffect(() => {
     const fetchUserName = async () => {
       if (selectedReservation) {
-        const user = await findUserById(selectedReservation.id_usuario);
-        setUserName(`${user.nombre} ${user.apellido}`);
+        const idUsuario = selectedReservation.id_usuario;
+        if (!idUsuario) return;
+        const user = await findUserById(idUsuario);
+        setReservaUsuario(user);
       }
     };
     fetchUserName();
@@ -130,17 +143,28 @@ export function ReservaCanchas({ active, admin }) {
     [reservas, selectedDate]
   );
 
+  // Lógica para cancelar una reserva siendo administrador
   const handleCancelReservation = useCallback(() => {
     if (selectedReservation) {
-      // Implement the logic to cancel the reservation here
-      // For example: cancelReservation(selectedReservation.id);
-      console.log("Canceling reservation:", selectedReservation);
+      // Enviar un mail al usuario informando la cancelación
+      const { email, subject, message } = contenidoMail;
+
+      enviarMail({ email, subject, message });
+      eliminarUnaReserva(selectedReservation._id);
+
       setIsAdminDialogOpen(false);
       setSelectedReservation(null);
-      // After cancellation, update the reservations
+
+      // actualizar las reservas despues de cancelar la reserva
       obtenerTodasLasReservasDelAnio(selectedDate.getFullYear());
     }
-  }, [selectedReservation, selectedDate, obtenerTodasLasReservasDelAnio]);
+  }, [
+    selectedReservation,
+    selectedDate,
+    obtenerTodasLasReservasDelAnio,
+    contenidoMail,
+    eliminarUnaReserva,
+  ]);
 
   //------------------------------------------
 
@@ -352,11 +376,27 @@ export function ReservaCanchas({ active, admin }) {
               <AlertDialogDescription>
                 {selectedReservation && (
                   <>
-                    <div>Fecha: {selectedReservation.fecha}</div>
-                    <div>Hora: {selectedReservation.hora_inicio}</div>
-                    <div>Usuario: {userName}</div>
+                    <div>
+                      <span className="font-bold">Fecha:</span>{" "}
+                      {selectedReservation.fecha}
+                    </div>
+                    <div>
+                      <span className="font-bold">Hora:</span>{" "}
+                      {selectedReservation.hora_inicio}
+                    </div>
+                    <div>
+                      <span className="font-bold">Usuario:</span>{" "}
+                      {`${reservaUsuario.nombre} ${reservaUsuario.apellido}`}
+                    </div>
                   </>
                 )}
+                <br />
+                <hr />
+                <br />
+                <span>
+                  <span className="font-bold">Atención:</span> al calcelar una
+                  reserva se le enviará un mail al usuario informándolo.
+                </span>
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

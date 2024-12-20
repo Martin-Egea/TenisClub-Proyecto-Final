@@ -5,7 +5,9 @@ import { transporter } from "../helpers/mailer.js";
 const router = Router();
 
 router.post("/enviarMail", authRequired, async (req, res) => {
-  const { email, subject, message } = req.body;
+  const { email, subject, message } = req.body.email;
+
+  //console.log(req.body.email);
 
   await transporter.sendMail({
     from: `Tenis Club Comercio <${process.env.EMAIL_USER}>`,
