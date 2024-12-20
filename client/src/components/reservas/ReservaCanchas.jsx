@@ -19,6 +19,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useReserva } from "@/context/ReservaContext";
 import { useUser } from "@/context/UserContext";
 
@@ -40,13 +50,15 @@ const horariosDisponibles = [
   "22:00",
 ];
 
-export function ReservaCanchas({ active }) {
+export function ReservaCanchas({ active, admin }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [courts, setCourts] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [previousYear, setPreviousYear] = useState(null);
   const [reserveAllCompleted, setReserveAllCompleted] = useState(false);
+  const [isAdminDialogOpen, setIsAdminDialogOpen] = useState(false);
+  const [userName, setUserName] = useState("cargando...");
 
   const {
     canchas,
@@ -55,7 +67,18 @@ export function ReservaCanchas({ active }) {
     reservas,
     crearNuevaReserva,
   } = useReserva();
-  const { user } = useUser();
+  const { user, findUserById } = useUser();
+
+  // Cargar el nombre del usuario de la reserva seleccionada
+  useEffect(() => {
+    const fetchUserName = async () => {
+      if (selectedReservation) {
+        const user = await findUserById(selectedReservation.id_usuario);
+        setUserName(`${user.nombre} ${user.apellido}`);
+      }
+    };
+    fetchUserName();
+  }, [findUserById, selectedReservation]);
 
   // Cargar y actualizar la lista de canchas cuando cambian
   useEffect(() => {
@@ -88,6 +111,38 @@ export function ReservaCanchas({ active }) {
     setSelectedReservation({ courtId, time });
     setIsDialogOpen(true);
   }, []);
+
+  //------------------------------------------
+  const handleAdminReservationClick = useCallback(
+    (courtId, time) => {
+      const formattedDate = format(selectedDate, "dd/MM/yyyy");
+      const reservation = reservas.find(
+        (r) =>
+          r.id_cancha === courtId &&
+          r.fecha === formattedDate &&
+          r.hora_inicio === time
+      );
+      if (reservation) {
+        setSelectedReservation(reservation);
+        setIsAdminDialogOpen(true);
+      }
+    },
+    [reservas, selectedDate]
+  );
+
+  const handleCancelReservation = useCallback(() => {
+    if (selectedReservation) {
+      // Implement the logic to cancel the reservation here
+      // For example: cancelReservation(selectedReservation.id);
+      console.log("Canceling reservation:", selectedReservation);
+      setIsAdminDialogOpen(false);
+      setSelectedReservation(null);
+      // After cancellation, update the reservations
+      obtenerTodasLasReservasDelAnio(selectedDate.getFullYear());
+    }
+  }, [selectedReservation, selectedDate, obtenerTodasLasReservasDelAnio]);
+
+  //------------------------------------------
 
   // Lógica para confirmar la reserva
   const handleReservationConfirm = useCallback(() => {
@@ -202,12 +257,12 @@ export function ReservaCanchas({ active }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fade-up">
           {courts.map((court) => (
             <Card key={court._id}>
-              <CardHeader className="p-4 pb-0">
-                <CardTitle className="text-2xl font-semibold bg-gray-100 rounded-lg text-center p-0">
-                  {court.nombre}
+              <CardHeader className="p-0">
+                <CardTitle className="text-xl font-semibold bg-zinc-200 rounded-t-lg text-center p-2">
+                  {court.nombre.toUpperCase()}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-4 pt-3">
+              <CardContent className="p-4 pt-3 ">
                 {/* <div className="aspect-video relative overflow-hidden rounded-lg mb-4">
                   <img
                     src="/Cancha-Tenis.png"
@@ -219,8 +274,12 @@ export function ReservaCanchas({ active }) {
                   {horariosDisponibles.map((time) => (
                     <Button
                       key={time}
-                      onClick={() => handleReservationClick(court._id, time)}
-                      disabled={isReserved(court._id, time)}
+                      onClick={() =>
+                        isReserved(court._id, time) && admin
+                          ? handleAdminReservationClick(court._id, time)
+                          : handleReservationClick(court._id, time)
+                      }
+                      disabled={isReserved(court._id, time) && !admin}
                       variant={
                         isReserved(court._id, time)
                           ? "destructive"
@@ -228,7 +287,7 @@ export function ReservaCanchas({ active }) {
                       }
                       className={
                         isReserved(court._id, time)
-                          ? "w-full border border-red-900"
+                          ? "w-full border border-red-600 hover:bg-red-700"
                           : "w-full border border-green-300 bg-green-100 hover:bg-green-300"
                       }
                     >
@@ -283,6 +342,34 @@ export function ReservaCanchas({ active }) {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        <AlertDialog
+          open={isAdminDialogOpen}
+          onOpenChange={setIsAdminDialogOpen}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Información de Reserva</AlertDialogTitle>
+              <AlertDialogDescription>
+                {selectedReservation && (
+                  <>
+                    <div>Fecha: {selectedReservation.fecha}</div>
+                    <div>Hora: {selectedReservation.hora_inicio}</div>
+                    <div>Usuario: {userName}</div>
+                  </>
+                )}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cerrar</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleCancelReservation}
+                className="bg-red-500 text-white px-4 rounded-md hover:bg-red-700"
+              >
+                Cancelar Reserva
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );

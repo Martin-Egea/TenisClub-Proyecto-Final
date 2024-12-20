@@ -169,7 +169,10 @@ export default function HomePage() {
         usuarioId={user.id}
         active={activeItem === "Reservas"}
       />
-      <ReservaCanchas active={activeItem === "Reservas"} />
+      <ReservaCanchas
+        active={activeItem === "Reservas"}
+        admin={user.rol_usuario === 2}
+      />
 
       {/* SOCIOS */}
       <h2

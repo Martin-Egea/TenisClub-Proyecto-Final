@@ -7,6 +7,7 @@ import {
   verifyUserToken,
   obtenerUsuarios,
   actualizarUsuario,
+  buscarUsuarioXid,
 } from "../api/user.api";
 import {
   obtenerCuotasSociales,
@@ -84,6 +85,16 @@ export const UserProvider = ({ children }) => {
     try {
       const res = await obtenerUsuarios();
       setAllUsers(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //buscar un usuario por id
+  const findUserById = async (id) => {
+    try {
+      const res = await buscarUsuarioXid(id);
+      return res.data;
     } catch (error) {
       console.log(error);
     }
@@ -198,6 +209,7 @@ export const UserProvider = ({ children }) => {
         cuotasSociales,
         novedades,
         getAllUsers,
+        findUserById,
         updateUser,
         setCuotasSociales,
         getAllCuotasSociales,
