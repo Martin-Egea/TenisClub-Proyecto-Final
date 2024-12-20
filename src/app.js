@@ -9,6 +9,7 @@ import googleAuthRoutes from "./routes/googleAuth.routes.js";
 import canchasRoutes from "./routes/cancha.routes.js";
 import reservaRoutes from "./routes/reserva.routes.js";
 import novedadRoutes from "./routes/novedad.routes.js";
+import mailerRoutes from "./routes/mailer.routes.js";
 
 const app = express();
 
@@ -28,5 +29,6 @@ app.use("/api", googleAuthRoutes);
 app.use("/api", canchasRoutes);
 app.use("/api", reservaRoutes);
 app.use("/api", novedadRoutes);
+app.use("/api", mailerRoutes);
 
 export default app;
