@@ -144,13 +144,20 @@ export const updateUser = async (req, res) => {
     password,
   } = req.body;
 
+  //console.log(req.body);
+
   try {
     const userFound = await User.findById(id);
     if (!userFound) return res.status(400).json(["Usuario no encontrado"]);
 
+    const fechaNacimientoString = fecha_nacimiento;
+    const [dia, mes, anio] = fechaNacimientoString.split("/").map(Number);
+    const FechaNacimientoDate = new Date(anio, mes - 1, dia);
+    console.log(fechaNacimientoString);
+
     userFound.nombre = nombre;
     userFound.apellido = apellido;
-    userFound.fecha_nacimiento = fecha_nacimiento;
+    userFound.fecha_nacimiento = FechaNacimientoDate;
     userFound.domicilio = domicilio;
     userFound.localidad = localidad;
     userFound.telefono = telefono;

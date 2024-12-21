@@ -2,6 +2,7 @@
 import { useForm } from "react-hook-form";
 import { useUser } from "../context/UserContext";
 import { CreditCard } from "lucide-react";
+import { useToast } from "../hooks/use-toast";
 
 export function Payment({ active }) {
   const {
@@ -10,10 +11,17 @@ export function Payment({ active }) {
     formState: { errors },
   } = useForm();
   const { crearInformePago, getAllCuotasSociales } = useUser();
+  const { toast } = useToast();
 
   const onSubmit = handleSubmit(async (data) => {
     await crearInformePago(data);
     getAllCuotasSociales();
+
+    toast({
+      title: "Informe de pago",
+      description: "El pago se encuentra en proceso de revisión",
+      variant: "success",
+    });
   });
 
   // si el componente no esta activo, no mostrar nada

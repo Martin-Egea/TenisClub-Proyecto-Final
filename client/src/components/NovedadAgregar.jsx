@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useUser } from "../context/UserContext";
 import { Textarea } from "./ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 
 // eslint-disable-next-line react/prop-types
 export default function BarraNovedades({ active }) {
@@ -12,6 +13,7 @@ export default function BarraNovedades({ active }) {
   const [descripcion, setDescripcion] = useState("");
   const [imagenUrl, setImagenUrl] = useState("");
 
+  const { toast } = useToast();
   const { createNovedad } = useUser();
 
   const handleImagenChange = (e) => {
@@ -35,6 +37,11 @@ export default function BarraNovedades({ active }) {
     formData.append("imagen", imagenUrl);
 
     createNovedad(formData);
+    toast({
+      title: "Novedad agregada",
+      description: "La novedad se agregó correctamente",
+      variant: "success",
+    });
 
     setTitulo("");
     setDescripcion("");

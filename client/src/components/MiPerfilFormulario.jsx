@@ -115,6 +115,10 @@ export default function MiPerfilFormulario({ active }) {
     };
 
     updateUser(userUpdated);
+    toast({
+      description: "Perfil actualizado con exito!",
+      variant: "success",
+    });
     //console.log(user);
     setIsDialogOpen(false);
   };

@@ -40,6 +40,7 @@ export const eliminarCuotaSocial = async (req, res) => {
 export const actualizarCuotaSocial = async (req, res) => {
   const id = req.params.id;
   const { importe, mes, socio, revisado } = req.body;
+  console.log(req.body);
   const cuotaSocial = await CuotaSocial.findByIdAndUpdate(
     id,
     { importe, mes, socio, revisado },

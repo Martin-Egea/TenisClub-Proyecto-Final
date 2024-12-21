@@ -28,6 +28,7 @@ export const useReserva = () => {
 export const ReservaProvider = ({ children }) => {
   const [reservas, setReservas] = useState([]);
   const [canchas, setCanchas] = useState([]);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
   const obtenerTodasLasCanchas = async () => {
     try {
@@ -126,6 +127,8 @@ export const ReservaProvider = ({ children }) => {
         obtenerTodasLasReservasDelAnio,
         reservas,
         canchas,
+        selectedYear,
+        setSelectedYear,
       }}
     >
       {children}

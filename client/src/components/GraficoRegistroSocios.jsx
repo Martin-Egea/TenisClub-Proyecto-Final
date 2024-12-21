@@ -10,6 +10,7 @@ import {
 import { ChartContainer } from "@/components/ui/chart";
 import { useMemo } from "react";
 import { useUser } from "../context/UserContext";
+import { useReserva } from "@/context/ReservaContext";
 
 const formatearMes = (mes) => {
   const [year, month] = mes.split("-");
@@ -36,9 +37,10 @@ const mesesOrdenados = [
 
 export default function GraficoRegistroSocios({ active }) {
   const { cuotasSociales } = useUser();
+  const { selectedYear } = useReserva();
 
   const datosProcesados = useMemo(() => {
-    const añoActual = new Date().getFullYear();
+    const añoActual = selectedYear || new Date().getFullYear();
     const datosIniciales = mesesOrdenados.map((mes) => ({ mes, total: 0 }));
 
     const datosAgrupados = cuotasSociales
@@ -56,7 +58,7 @@ export default function GraficoRegistroSocios({ active }) {
       }, datosIniciales);
 
     return datosAgrupados;
-  }, [cuotasSociales]);
+  }, [cuotasSociales, selectedYear]);
 
   // si el componente no esta activo, no mostrar nada
   if (!active) {

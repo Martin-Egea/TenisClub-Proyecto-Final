@@ -15,6 +15,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useReserva } from "@/context/ReservaContext";
+import { useMemo } from "react";
+import { useEffect } from "react";
 
 const chartConfig = {
   reservas: {
@@ -57,9 +59,18 @@ function contarReservasPorMes(reservas, meses) {
 }
 
 export function GraficoReservasXmes({ active }) {
-  const { reservas } = useReserva();
+  const { reservas, obtenerTodasLasReservasDelAnio, selectedYear } =
+    useReserva();
 
-  const datosProcesados = contarReservasPorMes(reservas, meses);
+  const datosProcesados = useMemo(
+    () => contarReservasPorMes(reservas, meses),
+    [reservas]
+  );
+
+  useEffect(() => {
+    obtenerTodasLasReservasDelAnio(selectedYear);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedYear]);
 
   if (!active) {
     return null;

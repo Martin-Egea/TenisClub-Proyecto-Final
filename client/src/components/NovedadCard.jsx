@@ -18,6 +18,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { X, Eye } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function NovedadCard({
   id,
@@ -32,9 +33,15 @@ export default function NovedadCard({
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const { toast } = useToast();
+
   const handleDelete = (e) => {
     e.stopPropagation();
     onDelete(id);
+    toast({
+      title: "Novedad eliminada",
+      variant: "destructive",
+    });
   };
 
   const handleCardClick = () => {

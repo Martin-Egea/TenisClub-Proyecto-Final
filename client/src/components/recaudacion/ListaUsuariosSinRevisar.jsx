@@ -15,14 +15,23 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-import { useUser } from "@/context/UserContext.jsx";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 import {
   actualizarCuotaSocial,
   obtenerCuotaSocialXid,
 } from "@/api/cuotaSocial.api.js";
 import { actualizarUsuario, buscarUsuarioXid } from "@/api/user.api.js";
 import { importeFormateado, mesFormateado } from "@/utils/formatearDatos.js";
+import { useUser } from "@/context/UserContext.jsx";
+import { useReserva } from "@/context/ReservaContext";
+import { useToast } from "@/hooks/use-toast";
+import { format } from "date-fns";
 
 async function actualizarEstadoUsuario(id) {
   const res = await obtenerCuotaSocialXid(id);
@@ -30,14 +39,18 @@ async function actualizarEstadoUsuario(id) {
   actualizarCuotaSocial(res.data);
 
   const user = await buscarUsuarioXid(res.data.socio);
+
   user.data.socio_activo = true;
-  console.log(user.data);
+  user.data.fecha_nacimiento = format(new Date(), "dd/MM/yyyy");
   actualizarUsuario(user.data);
 }
 
 export function RecaudacionesMenuSuperior({ active }) {
   const [usuariosARevisar, setUsuariosARevisar] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isYearDropdownOpen, setIsYearDropdownOpen] = useState(false);
+
+  const { toast } = useToast();
 
   const {
     cuotasSociales,
@@ -46,12 +59,15 @@ export function RecaudacionesMenuSuperior({ active }) {
     deleteCuotaSocial,
   } = useUser();
 
+  const { selectedYear, setSelectedYear } = useReserva();
+
   function filtrarUsuarios() {
     const usuariosSinRevisar = cuotasSociales.filter(
       (cuota) => cuota.revisado === false
     );
     setUsuariosARevisar(usuariosSinRevisar);
   }
+
   useEffect(() => {
     const usuariosSinRevisar = cuotasSociales.filter(
       (cuota) => cuota.revisado === false
@@ -61,17 +77,43 @@ export function RecaudacionesMenuSuperior({ active }) {
 
   const handleConfirmarRevision = async (id) => {
     await actualizarEstadoUsuario(id);
+
     getAllCuotasSociales();
     getAllUsers();
+
+    toast({
+      title: "Cuota social confirmada!",
+      variant: "success",
+    });
   };
 
   const handleCancelarRevision = (id) => {
     deleteCuotaSocial(id);
+
+    toast({
+      title: "Cuota social cancelada!",
+      variant: "destructive",
+    });
   };
 
   const handleMostrarUsuarios = () => {
     filtrarUsuarios();
     setIsOpen(true);
+  };
+
+  // Genera los años para el dropdown
+  const generateYearOptions = () => {
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    for (let i = 0; i < 5; i++) {
+      years.push(currentYear - i);
+    }
+    return years;
+  };
+
+  const handleYearSelect = (year) => {
+    setSelectedYear(year);
+    setIsYearDropdownOpen(true);
   };
 
   // si el componente no esta activo, no mostrar nada
@@ -87,6 +129,33 @@ export function RecaudacionesMenuSuperior({ active }) {
       <div className="w-screen -ml-8 pl-3 shadow-md animate-fade-down bg-white bg-opacity-70">
         <div className="flex items-center justify-between bg-white px-4 py-2 shadow-2xl">
           <h1 className="text-lg font-semibold">Recaudaciones</h1>
+          {/* menu para seleccionar el año */}
+          <DropdownMenu
+            open={isYearDropdownOpen}
+            onOpenChange={setIsYearDropdownOpen}
+          >
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="border border-gray-400"
+                aria-label={`Seleccionar año, año actual: ${selectedYear}`}
+              >
+                {selectedYear} <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {generateYearOptions().map((year) => (
+                <DropdownMenuItem
+                  key={year}
+                  onSelect={() => handleYearSelect(year)}
+                >
+                  {year}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {/* Botón para mostrar la lista de usuarios para revisión */}
           <Popover open={isOpen} onOpenChange={setIsOpen}>
             <PopoverTrigger asChild>
               <Button

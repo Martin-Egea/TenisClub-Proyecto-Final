@@ -32,6 +32,7 @@ import {
 import { useReserva } from "@/context/ReservaContext";
 import { useUser } from "@/context/UserContext";
 import { enviarMail } from "@/api/mailer.api";
+import { useToast } from "@/hooks/use-toast";
 
 const horariosDisponibles = [
   "08:00",
@@ -56,20 +57,21 @@ export function ReservaCanchas({ active, admin }) {
   const [courts, setCourts] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] = useState(null);
-  const [previousYear, setPreviousYear] = useState(null);
-  const [reserveAllCompleted, setReserveAllCompleted] = useState(false);
+  /* const [previousYear, setPreviousYear] = useState(null);
+  const [reserveAllCompleted, setReserveAllCompleted] = useState(false); */
   const [isAdminDialogOpen, setIsAdminDialogOpen] = useState(false);
   const [reservaUsuario, setReservaUsuario] = useState({});
 
   const {
     canchas,
     obtenerTodasLasCanchas,
-    obtenerTodasLasReservasDelAnio,
+    /* obtenerTodasLasReservasDelAnio, */
     reservas,
     crearNuevaReserva,
     eliminarUnaReserva,
   } = useReserva();
   const { user, findUserById } = useUser();
+  const { toast } = useToast();
 
   const contenidoMail = useMemo(
     () => ({
@@ -100,21 +102,24 @@ export function ReservaCanchas({ active, admin }) {
       setCourts(canchas);
     }
   }, [courts, obtenerTodasLasCanchas, canchas]);
+  /* useEffect(() => {
+    obtenerTodasLasCanchas();
+  }, [obtenerTodasLasCanchas]);
+  
+  useEffect(() => {
+    setCourts(canchas);
+  }, [canchas]); */
 
   // Actualizar las reservaciones cuando cambia el año
-  useEffect(() => {
+  /* useEffect(() => {
     const year = selectedDate.getFullYear();
     if (year !== previousYear) {
       obtenerTodasLasReservasDelAnio(year);
       setPreviousYear(year);
     }
     setReserveAllCompleted(false);
-  }, [
-    selectedDate,
-    obtenerTodasLasReservasDelAnio,
-    previousYear,
-    reserveAllCompleted,
-  ]);
+    console.log("Algo");
+  }, [selectedDate, obtenerTodasLasReservasDelAnio, previousYear]); */
 
   const handleDateSelect = useCallback((date) => {
     setSelectedDate(date);
@@ -151,21 +156,25 @@ export function ReservaCanchas({ active, admin }) {
 
       enviarMail({ email, subject, message });
       eliminarUnaReserva(selectedReservation._id);
+      toast({
+        description: "Reserva de usuario cancelada!",
+        variant: "destructive",
+      });
 
       setIsAdminDialogOpen(false);
       setSelectedReservation(null);
 
       // actualizar las reservas despues de cancelar la reserva
-      obtenerTodasLasReservasDelAnio(selectedDate.getFullYear());
+      /* obtenerTodasLasReservasDelAnio(selectedDate.getFullYear()); */
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     selectedReservation,
-    selectedDate,
-    obtenerTodasLasReservasDelAnio,
+    /* selectedDate,
+    obtenerTodasLasReservasDelAnio, */
     contenidoMail,
     eliminarUnaReserva,
   ]);
-
   //------------------------------------------
 
   // Lógica para confirmar la reserva
@@ -180,15 +189,21 @@ export function ReservaCanchas({ active, admin }) {
       //console.log(nuevaReserva);
       crearNuevaReserva(nuevaReserva);
 
+      toast({
+        description: "Reserva confirmada!",
+        variant: "success",
+      });
+
       setIsDialogOpen(false);
       setSelectedReservation(null);
       // Actualizar las reservaciones después de confirmar la reserva.
-      obtenerTodasLasReservasDelAnio(selectedDate.getFullYear());
+      /* obtenerTodasLasReservasDelAnio(selectedDate.getFullYear()); */
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     selectedReservation,
     selectedDate,
-    obtenerTodasLasReservasDelAnio,
+    /* obtenerTodasLasReservasDelAnio, */
     crearNuevaReserva,
     user.id,
   ]);
@@ -227,11 +242,19 @@ export function ReservaCanchas({ active, admin }) {
         //console.log(nuevaReserva);
         crearNuevaReserva(nuevaReserva);
       }
-      setReserveAllCompleted(true);
+      toast({
+        title: "Todos los horarios reservados!",
+        variant: "success",
+      });
       // Después de reservar todos, actualizamos las reservaciones
-      obtenerTodasLasReservasDelAnio(selectedDate.getFullYear());
+      /* obtenerTodasLasReservasDelAnio(selectedDate.getFullYear()); */
     },
-    [obtenerTodasLasReservasDelAnio, selectedDate, crearNuevaReserva, user.id]
+    [
+      /* obtenerTodasLasReservasDelAnio, */ selectedDate,
+      crearNuevaReserva,
+      toast,
+      user.id,
+    ]
   );
   // Mostrar las reservas actuales
   /* useEffect(() => {

@@ -64,7 +64,6 @@ export function ReservasDeUsuario({ usuarioId, active }) {
       obtenerTodasLasReservasDelAnio(new Date().getFullYear());
       toast({
         title: "Reserva cancelada",
-        description: "Tu reserva ha sido cancelada exitosamente.",
       });
     } catch (error) {
       console.error("Error al cancelar la reserva:", error);

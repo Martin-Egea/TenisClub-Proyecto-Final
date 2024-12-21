@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/chart";
 import { useUser } from "../../context/UserContext";
 import { mesFormateado } from "@/utils/formatearDatos";
+import { useReserva } from "@/context/ReservaContext";
 
 const chartConfig = {
   usuarios: {
@@ -31,12 +32,12 @@ const chartConfig = {
 };
 
 // Función para procesar datos
-const datosDeCuotasProcesadas = (cuotasSociales, allUsers) => {
+const datosDeCuotasProcesadas = (year, cuotasSociales, allUsers) => {
   const result = {};
 
   // Inicializar todos los meses del año en el resultado
   const meses = Array.from({ length: 12 }, (_, i) =>
-    new Date(2024, i, 1).toISOString().slice(0, 7)
+    new Date(year, i, 1).toISOString().slice(0, 7)
   );
 
   meses.forEach((mes) => {
@@ -91,8 +92,13 @@ const datosDeCuotasProcesadas = (cuotasSociales, allUsers) => {
 
 export function GraficoSociosXmes({ active }) {
   const { cuotasSociales, allUsers } = useUser();
+  const { selectedYear } = useReserva();
 
-  const datosProcesados = datosDeCuotasProcesadas(cuotasSociales, allUsers);
+  const datosProcesados = datosDeCuotasProcesadas(
+    selectedYear,
+    cuotasSociales,
+    allUsers
+  );
 
   if (!active) {
     return null;

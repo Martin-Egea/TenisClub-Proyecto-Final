@@ -117,8 +117,13 @@ export const UserProvider = ({ children }) => {
 
   //actualizar un usuario
   const updateUser = async (user) => {
-    const res = await actualizarUsuario(user);
-    console.log(res);
+    try {
+      const res = await actualizarUsuario(user);
+      setUser(res.data);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   //eliminar una cuota social
