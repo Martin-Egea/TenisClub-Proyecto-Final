@@ -163,8 +163,15 @@ export const updateUser = async (req, res) => {
     userFound.telefono = telefono;
     userFound.email = email;
     userFound.socio_activo = socio_activo;
-    if (password && password !== "")
+    if (
+      password &&
+      password !== "" &&
+      password !== undefined &&
+      password !== null &&
+      password.length > 7
+    ) {
       userFound.password = bcrypt.hashSync(password, 8);
+    }
 
     const userUpdated = await userFound.save();
     res.status(200).json(userUpdated);

@@ -59,9 +59,12 @@ export default function TablaSocios({ active }) {
     try {
       // carga de cuotas revisadas para un usuario específico
       const cuotas = cuotasSociales.filter(
-        (cuota) => cuota.socio._id === userId && cuota.revisado === true
+        (cuota) =>
+          cuota.socio._id === userId &&
+          cuota.revisado === true &&
+          /^\d{4}/.test(cuota.mes) && // comprueba que el mes tenga 4 digitos al principio.
+          cuota.mes.startsWith(new Date().getFullYear().toString())
       );
-
       setCuotasUsuario(cuotas);
     } catch (error) {
       console.error("Error al cargar cuotas:", error);

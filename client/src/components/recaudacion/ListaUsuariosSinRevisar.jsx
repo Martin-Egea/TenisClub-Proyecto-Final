@@ -32,6 +32,7 @@ import { useUser } from "@/context/UserContext.jsx";
 import { useReserva } from "@/context/ReservaContext";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import { useMediaQuery } from "react-responsive";
 
 async function actualizarEstadoUsuario(id) {
   const res = await obtenerCuotaSocialXid(id);
@@ -51,6 +52,7 @@ export function RecaudacionesMenuSuperior({ active }) {
   const [isYearDropdownOpen, setIsYearDropdownOpen] = useState(false);
 
   const { toast } = useToast();
+  const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
 
   const {
     cuotasSociales,
@@ -137,14 +139,14 @@ export function RecaudacionesMenuSuperior({ active }) {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                size="sm"
-                className="border border-gray-400"
+                size={isMobile ? "xs" : "sm"}
+                className="border border-gray-400 p-1 md:px-2"
                 aria-label={`Seleccionar año, año actual: ${selectedYear}`}
               >
                 {selectedYear} <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="animate-fade-down animate-duration-300">
               {generateYearOptions().map((year) => (
                 <DropdownMenuItem
                   key={year}
@@ -160,15 +162,25 @@ export function RecaudacionesMenuSuperior({ active }) {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                size="sm"
-                className="border border-gray-400"
+                size={isMobile ? "xs" : "sm"}
+                className="border border-gray-400 p-1 md:px-2"
                 onClick={handleMostrarUsuarios}
               >
-                Mostrar Usuarios
+                {isMobile ? (
+                  <>
+                    Usuarios
+                    <ChevronDown className="" />
+                  </>
+                ) : (
+                  <>
+                    Usuarios a Revisar
+                    <ChevronDown className="ml-2 h-4 w-4" />
+                  </>
+                )}
               </Button>
             </PopoverTrigger>
             <PopoverContent
-              className="w-[calc(100vw-2rem)] md:w-full p-0 max-h-[80vh] overflow-auto mt-5 animate-fade-down animate-duration-400"
+              className="w-[calc(100vw-2rem)] md:w-full p-0 max-h-[80vh] overflow-auto mt-5 animate-fade-down animate-duration-300"
               align="end"
             >
               <Card className="w-full border-0 shadow-none">

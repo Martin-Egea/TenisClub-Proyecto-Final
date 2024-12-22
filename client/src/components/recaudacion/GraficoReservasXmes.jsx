@@ -83,9 +83,11 @@ export function GraficoReservasXmes({ active }) {
     >
       <Card className="flex flex-col md:min-w-[400px] md:min-h-[400px]">
         <CardHeader>
-          <CardTitle>Turnos Reservados por mes</CardTitle>
+          <CardTitle className="text-xl md:text-2xl">
+            Turnos Reservados
+          </CardTitle>
           <CardDescription>
-            Cantidad de turnos reservados a la fecha.
+            Cantidad de turnos reservados durante el año.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -140,7 +142,7 @@ export function GraficoReservasXmes({ active }) {
                 Periodo{" "}
               </div>
               <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                Enero a Diciembre - {new Date().getFullYear()}
+                Enero a Diciembre - {selectedYear}
               </div>
             </div>
           </div>

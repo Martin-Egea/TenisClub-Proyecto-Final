@@ -73,10 +73,12 @@ export default function GraficoRegistroSocios({ active }) {
     >
       <Card className="flex flex-col md:min-w-[400px] md:min-h-[400px] md:max-w-[400px]">
         <CardHeader className="">
-          <CardTitle>Registro de Socios por mes</CardTitle>
+          <CardTitle className="text-xl md:text-2xl">
+            Recaudación mensual
+          </CardTitle>
           <CardDescription>
             Suma de importes de cuotas sociales registradas en el año{" "}
-            {new Date().getFullYear()}
+            {selectedYear}
           </CardDescription>
         </CardHeader>
         <CardContent className="p-0 md:p-6 font-bold">

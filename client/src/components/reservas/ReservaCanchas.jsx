@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { format, parse } from "date-fns";
+import { format, parse, isAfter, startOfDay, isSameDay } from "date-fns";
 import { es } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -141,11 +141,27 @@ export function ReservaCanchas({ active, admin }) {
           r.hora_inicio === time
       );
       if (reservation) {
-        setSelectedReservation(reservation);
-        setIsAdminDialogOpen(true);
+        const reservationDate = parse(
+          reservation.fecha,
+          "dd/MM/yyyy",
+          new Date()
+        );
+        const isDateValidForCancellation =
+          isAfter(startOfDay(reservationDate), startOfDay(new Date())) ||
+          isSameDay(reservationDate, new Date());
+
+        if (isDateValidForCancellation) {
+          setSelectedReservation(reservation);
+          setIsAdminDialogOpen(true);
+        } else {
+          toast({
+            description: "No se pueden cancelar reservas de fechas pasadas!",
+            variant: "destructive",
+          });
+        }
       }
     },
-    [reservas, selectedDate]
+    [reservas, selectedDate, toast]
   );
 
   // Lógica para cancelar una reserva siendo administrador
@@ -231,23 +247,33 @@ export function ReservaCanchas({ active, admin }) {
   // Lógica para reservar todos los horarios
   const handleReserveAll = useCallback(
     (courtId) => {
-      // Implementar lógica para reservar todos los horarios disponibles en MongoDB
-      for (const horarios of horariosDisponibles) {
-        const nuevaReserva = {
-          id_cancha: courtId,
-          fecha: format(selectedDate, "dd/MM/yyyy"),
-          hora_inicio: horarios,
-          id_usuario: user.id,
-        };
-        //console.log(nuevaReserva);
-        crearNuevaReserva(nuevaReserva);
+      if (
+        isAfter(startOfDay(selectedDate), startOfDay(new Date())) ||
+        isSameDay(selectedDate, new Date())
+      ) {
+        // lógica para reservar todos los horarios disponibles en MongoDB
+        for (const horarios of horariosDisponibles) {
+          const nuevaReserva = {
+            id_cancha: courtId,
+            fecha: format(selectedDate, "dd/MM/yyyy"),
+            hora_inicio: horarios,
+            id_usuario: user.id,
+          };
+          //console.log(nuevaReserva);
+          crearNuevaReserva(nuevaReserva);
+        }
+        toast({
+          title: "Todos los horarios reservados!",
+          variant: "success",
+        });
+        // Después de reservar todos, actualizamos las reservaciones
+        /* obtenerTodasLasReservasDelAnio(selectedDate.getFullYear()); */
+      } else {
+        toast({
+          title: "No se pueden reservar horarios para fechas pasadas",
+          variant: "error",
+        });
       }
-      toast({
-        title: "Todos los horarios reservados!",
-        variant: "success",
-      });
-      // Después de reservar todos, actualizamos las reservaciones
-      /* obtenerTodasLasReservasDelAnio(selectedDate.getFullYear()); */
     },
     [
       /* obtenerTodasLasReservasDelAnio, */ selectedDate,
@@ -279,14 +305,16 @@ export function ReservaCanchas({ active, admin }) {
                 }`}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {selectedDate ? (
+                {selectedDate &&
+                selectedDate instanceof Date &&
+                !isNaN(selectedDate.getTime()) ? (
                   format(selectedDate, "PPP", { locale: es })
                 ) : (
                   <span>Selecciona una fecha</span>
                 )}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
+            <PopoverContent className="w-auto p-0 animate-fade-down animate-duration-300">
               <Calendar
                 mode="single"
                 caption_label={({ day }) => (
@@ -318,29 +346,46 @@ export function ReservaCanchas({ active, admin }) {
                   />
                 </div> */}
                 <div className="grid grid-cols-3 gap-2">
-                  {horariosDisponibles.map((time) => (
-                    <Button
-                      key={time}
-                      onClick={() =>
-                        isReserved(court._id, time) && admin
-                          ? handleAdminReservationClick(court._id, time)
-                          : handleReservationClick(court._id, time)
-                      }
-                      disabled={isReserved(court._id, time) && !admin}
-                      variant={
-                        isReserved(court._id, time)
-                          ? "destructive"
-                          : "secondary"
-                      }
-                      className={
-                        isReserved(court._id, time)
-                          ? "w-full border border-red-600 hover:bg-red-700"
-                          : "w-full border border-green-300 bg-green-100 hover:bg-green-300"
-                      }
-                    >
-                      {time}
-                    </Button>
-                  ))}
+                  {horariosDisponibles.map((time) => {
+                    const isDateValidForReservation =
+                      isAfter(
+                        startOfDay(selectedDate),
+                        startOfDay(new Date())
+                      ) || isSameDay(selectedDate, new Date());
+                    const isDateValidForCancellation =
+                      isDateValidForReservation;
+                    const isClickable =
+                      isDateValidForReservation ||
+                      (admin &&
+                        isReserved(court._id, time) &&
+                        isDateValidForCancellation);
+
+                    return (
+                      <Button
+                        key={time}
+                        onClick={() =>
+                          isClickable
+                            ? isReserved(court._id, time) && admin
+                              ? handleAdminReservationClick(court._id, time)
+                              : handleReservationClick(court._id, time)
+                            : null
+                        }
+                        disabled={!isClickable}
+                        variant={
+                          isReserved(court._id, time)
+                            ? "destructive"
+                            : "secondary"
+                        }
+                        className={
+                          isReserved(court._id, time)
+                            ? "w-full border border-red-600 hover:bg-red-700"
+                            : "w-full border border-green-300 bg-green-100 hover:bg-green-300"
+                        }
+                      >
+                        {time}
+                      </Button>
+                    );
+                  })}
                 </div>
                 <Button
                   className={`w-full bg-orange-600 text-white mt-2 py-2 px-4 rounded-md hover:bg-orange-700 ${
@@ -348,6 +393,12 @@ export function ReservaCanchas({ active, admin }) {
                   }`}
                   variant="default"
                   onClick={() => handleReserveAll(court._id)}
+                  disabled={
+                    !isAfter(
+                      startOfDay(selectedDate),
+                      startOfDay(new Date())
+                    ) && !isSameDay(selectedDate, new Date())
+                  }
                 >
                   Reservar todos los horarios
                 </Button>
@@ -356,7 +407,7 @@ export function ReservaCanchas({ active, admin }) {
           ))}
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent>
+          <DialogContent className="animate-fade animate-duration-300">
             <DialogHeader>
               <DialogTitle>Confirmar Reserva</DialogTitle>
               <DialogDescription>
@@ -393,7 +444,7 @@ export function ReservaCanchas({ active, admin }) {
           open={isAdminDialogOpen}
           onOpenChange={setIsAdminDialogOpen}
         >
-          <AlertDialogContent>
+          <AlertDialogContent className="animate-fade animate-duration-300">
             <AlertDialogHeader>
               <AlertDialogTitle>Información de Reserva</AlertDialogTitle>
               <AlertDialogDescription>

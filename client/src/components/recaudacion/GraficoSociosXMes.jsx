@@ -112,8 +112,10 @@ export function GraficoSociosXmes({ active }) {
       <Card className="flex flex-col md:min-w-[400px] md:min-h-[400px]">
         <CardHeader>
           <CardTitle>
-            <div className="flex gap-2">
-              <div>Grafico de socios </div>
+            <div className="flex gap-1 text-xl md:text-2xl">
+              <div>Socios </div>
+              <div className="text-orange-600"> inactivos</div>
+              <div>vs </div>
               <div className="text-green-600"> activos</div>
             </div>
           </CardTitle>
@@ -180,7 +182,10 @@ export function GraficoSociosXmes({ active }) {
                 stroke="var(--color-usuarios)"
                 stackId="a"
               />
-              <ChartLegend content={<ChartLegendContent />} />
+              <ChartLegend
+                content={<ChartLegendContent />}
+                className="md:text-lg"
+              />
             </AreaChart>
           </ChartContainer>
         </CardContent>
@@ -191,7 +196,7 @@ export function GraficoSociosXmes({ active }) {
                 Periodo{" "}
               </div>
               <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                Enero a Diciembre - {new Date().getFullYear()}
+                Enero a Diciembre - {selectedYear}
               </div>
             </div>
           </div>

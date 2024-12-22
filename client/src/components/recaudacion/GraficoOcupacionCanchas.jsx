@@ -19,7 +19,7 @@ import {
 import { useReserva } from "@/context/ReservaContext";
 
 export function GraficoOcupacionCanchas({ active }) {
-  const { reservas, canchas } = useReserva();
+  const { reservas, canchas, selectedYear } = useReserva();
   const [chartData, setChartData] = useState([]);
   const [chartConfig, setChartConfig] = useState({});
   const [totalReservas, setTotalReservas] = useState(0);
@@ -92,9 +92,11 @@ export function GraficoOcupacionCanchas({ active }) {
     >
       <Card className="flex flex-col md:min-w-[400px] md:min-h-[400px] min-h-[400px]">
         <CardHeader className="items-center pb-0">
-          <CardTitle>Ocupación de canchas</CardTitle>
+          <CardTitle className="text-xl md:text-2xl">
+            Ocupación de canchas
+          </CardTitle>
           <CardDescription>
-            Preferencia de canchas para {new Date().getFullYear()}
+            Preferencia de canchas para {selectedYear}
           </CardDescription>
         </CardHeader>
         <CardContent className="flex-1">
