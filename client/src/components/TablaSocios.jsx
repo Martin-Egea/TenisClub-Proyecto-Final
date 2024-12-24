@@ -42,7 +42,7 @@ export default function TablaSocios({ active }) {
       }
     };
     cargarUsuarios();
-  }, [allUsers]);
+  }, [allUsers, cuotasSociales]);
 
   //filtrado de socios en la tabla
   useEffect(() => {

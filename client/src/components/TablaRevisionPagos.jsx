@@ -51,8 +51,8 @@ export default function TablaRevisionPagos({ active }) {
 
   const handleConfirmarRevision = async (id) => {
     await actualizarEstadoUsuario(id);
-    getAllCuotasSociales();
-    getAllUsers();
+    await getAllCuotasSociales();
+    await getAllUsers();
   };
 
   // si el componente no esta activo, no mostrar nada

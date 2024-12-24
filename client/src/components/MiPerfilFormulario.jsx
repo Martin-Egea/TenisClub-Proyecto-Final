@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Eye, EyeClosed } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
@@ -32,6 +32,11 @@ import { useToast } from "@/hooks/use-toast";
 // eslint-disable-next-line react/prop-types
 export default function MiPerfilFormulario({ active }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [mostrarContraseña, setMostrarContraseña] = useState(false);
+
+  const toggleMostrarContraseña = () =>
+    setMostrarContraseña(!mostrarContraseña);
+
   const { user, updateUser } = useUser();
   const { toast } = useToast();
 
@@ -286,7 +291,7 @@ export default function MiPerfilFormulario({ active }) {
                   </FormItem>
                 )}
               />
-              <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-wrap gap-4">
                 <FormField
                   control={form.control}
                   name="password"
@@ -305,7 +310,11 @@ export default function MiPerfilFormulario({ active }) {
                     <FormItem>
                       <FormLabel>Contraseña</FormLabel>
                       <FormControl>
-                        <Input {...field} type="password" />
+                        <Input
+                          {...field}
+                          type={mostrarContraseña ? "text" : "password"}
+                          value={field.value || ""}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -330,12 +339,27 @@ export default function MiPerfilFormulario({ active }) {
                     <FormItem>
                       <FormLabel>Repetir Contraseña</FormLabel>
                       <FormControl>
-                        <Input {...field} type="password" />
+                        <>
+                          <Input
+                            {...field}
+                            type={mostrarContraseña ? "text" : "password"}
+                            value={field.value || ""}
+                          />
+                        </>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+                <div className="flex items-center pt-7">
+                  <button
+                    type="button"
+                    onClick={toggleMostrarContraseña}
+                    className="text-gray-500"
+                  >
+                    {mostrarContraseña ? <Eye /> : <EyeClosed />}
+                  </button>
+                </div>
               </div>
             </div>
             <div className="flex justify-center mt-5">

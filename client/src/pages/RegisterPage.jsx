@@ -1,12 +1,19 @@
 import { useForm } from "react-hook-form";
 import { useUser } from "../context/UserContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeClosed } from "lucide-react";
 
 const RegisterPage = () => {
+  const [mostrarContraseña, setMostrarContraseña] = useState(false);
+
+  const toggleMostrarContraseña = () =>
+    setMostrarContraseña(!mostrarContraseña);
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
   const { signUp, isAuthenticated, errors: userErrors } = useUser();
@@ -24,7 +31,7 @@ const RegisterPage = () => {
 
   return (
     <div className="bg-gradient-to-br from-orange-950 via-amber-500 to-orange-950 flex justify-center items-center h-screen">
-      <div className="max-w-md mx-auto bg-white my-3 p-6 shadow-2xl rounded-lg animate-fade">
+      <div className="max-w-md mx-auto bg-white my-5 p-6 shadow-2xl rounded-lg animate-fade">
         <h2 className="text-xl font-bold mb-6 text-center">
           Registro de Usuario
         </h2>
@@ -158,7 +165,7 @@ const RegisterPage = () => {
             </div>
 
             {/* Email */}
-            <div>
+            <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700">
                 Email
               </label>
@@ -181,11 +188,12 @@ const RegisterPage = () => {
                 </span>
               )}
             </div>
-
-            {/* Password */}
+          </div>
+          {/* Password */}
+          <div className="flex md:flex-cols-3 gap-3 pt-3">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Password
+                Contraseña
               </label>
               <input
                 {...register("password", {
@@ -195,7 +203,7 @@ const RegisterPage = () => {
                     message: "La contraseña debe tener al menos 8 caracteres",
                   },
                 })}
-                type="password"
+                type={mostrarContraseña ? "text" : "password"}
                 className={` block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                   errors.password ? "border-red-500" : ""
                 }`}
@@ -206,8 +214,39 @@ const RegisterPage = () => {
                 </span>
               )}
             </div>
+            {/* Confirm Password */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Confirmar contraseña
+              </label>
+              <input
+                {...register("confirmPassword", {
+                  required: "Por favor confirme su contraseña",
+                  validate: (value) =>
+                    value === watch("password") ||
+                    "Las contraseñas no coinciden",
+                })}
+                type={mostrarContraseña ? "text" : "password"}
+                className={` block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                  errors.confirmPassword ? "border-red-500" : ""
+                }`}
+              />
+              {errors.confirmPassword && (
+                <span className="text-red-500 text-sm">
+                  {errors.confirmPassword.message}
+                </span>
+              )}
+            </div>
+            <div className="flex items-center pt-7">
+              <button
+                type="button"
+                onClick={toggleMostrarContraseña}
+                className="text-gray-500"
+              >
+                {mostrarContraseña ? <Eye /> : <EyeClosed />}
+              </button>
+            </div>
           </div>
-
           {/* Botón de enviar */}
 
           <div className="text-accent-foreground w-full mt-4 flex justify-center">
