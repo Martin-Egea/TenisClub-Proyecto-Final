@@ -87,31 +87,31 @@ export default function TablaSocios({ active }) {
       className={`flex justify-center items-center mx-auto p-4 animate-fade-left
         ${active ? "" : "hidden"} `}
     >
-      <Card className="shadow-2xl">
-        <CardHeader>
-          <CardTitle className="font-bold text-center text-2xl">
+      <Card className="shadow-2xl md:min-w-[742px]">
+        <CardHeader className="p-3">
+          <CardTitle className="font-bold text-center text-2xl p-0">
             Tabla de Socios
           </CardTitle>
         </CardHeader>
         <CardContent className="w-80 md:w-auto">
-          <div className="flex items-center space-x-2 mb-4">
+          <div className="flex items-center space-x-2 mb-4 ">
             <Search className="text-gray-400" />
             <Input
               type="text"
               placeholder="Buscar por nombre, apellido o email"
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
-              className="flex-grow"
+              className="flex-grow border border-orange-300"
             />
           </div>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead className="font-bold text-orange-700">
-                  Nombre
+                  Apellido
                 </TableHead>
                 <TableHead className="font-bold text-orange-700">
-                  Apellido
+                  Nombre
                 </TableHead>
                 <TableHead className="font-bold text-orange-700">
                   Email
@@ -134,8 +134,8 @@ export default function TablaSocios({ active }) {
                   onClick={() => handleRowClick(usuario)}
                   className="cursor-pointer hover:bg-gray-100 "
                 >
-                  <TableCell>{usuario.nombre}</TableCell>
                   <TableCell>{usuario.apellido}</TableCell>
+                  <TableCell>{usuario.nombre}</TableCell>
                   <TableCell className="text-left">{usuario.email}</TableCell>
                   <TableCell className="text-right">
                     {usuario.telefono}

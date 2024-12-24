@@ -25,10 +25,13 @@ import { GraficoSociosXmes } from "@/components/recaudacion/GraficoSociosXmes";
 import { GraficoOcupacionCanchas } from "@/components/recaudacion/GraficoOcupacionCanchas";
 import { GraficoReservasXmes } from "@/components/recaudacion/GraficoReservasXmes";
 import { RecaudacionesMenuSuperior } from "@/components/recaudacion/ListaUsuariosSinRevisar";
+import { useReserva } from "@/context/ReservaContext";
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("Novedades");
   const [logged, setLogged] = useState(false);
+
+  const { selectedYear } = useReserva();
 
   const {
     user,
@@ -194,24 +197,26 @@ export default function HomePage() {
         }`}
       >
         {/* Barra de Socios */}
-        <div className="flex items-center w-full pl-5 -ml-8 my-6 bg-gradient-to-r from-gray-100 via-gray-300 to-transparent animate-fade-right">
-          <span className="text-lg font-medium  mr-4">
-            Información de Socios
+        <div className="flex items-center w-full pl-5 py-2 -ml-8 my-6 bg-gradient-to-r from-gray-100 via-gray-300 to-transparent animate-fade-right ">
+          <span className="text-lg mr-4">
+            Información de Socios |{" "}
+            <p className="font-medium inline">{selectedYear}</p>
           </span>
-          <div className="h-1 bg-gradient-to-r from-gray-500 via-gray-300 to-transparent w-full"></div>
+          <div className="h-1 bg-gradient-to-r from-gray-500 via-gray-300 to-transparent flex-grow"></div>
         </div>
         {/* Gráficos de Socios */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-6 w-full">
           <GraficoRegistroSocios active={activeItem === "Recaudación"} />
           <GraficoSociosXmes active={activeItem === "Recaudación"} />
         </div>
 
         {/* Barra de Canchas */}
-        <div className="flex items-center w-full pl-5 -ml-8 my-6 bg-gradient-to-r from-gray-100 via-gray-300 to-transparent animate-fade-right">
-          <span className="text-lg font-medium mr-4">
-            Información de Canchas
+        <div className="flex items-center w-full pl-5 py-2 -ml-8 my-6 bg-gradient-to-r from-gray-100 via-gray-300 to-transparent animate-fade-right ">
+          <span className="text-lg mr-4">
+            Información de Canchas |{" "}
+            <p className="font-medium inline">{selectedYear}</p>
           </span>
-          <div className="h-1 bg-gradient-to-r from-gray-500 via-gray-300 to-transparent w-full"></div>
+          <div className="h-1 bg-gradient-to-r from-gray-500 via-gray-300 to-transparent flex-grow"></div>
         </div>
         {/* Gráficos de Canchas */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">

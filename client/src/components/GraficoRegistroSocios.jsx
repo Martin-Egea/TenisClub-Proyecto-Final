@@ -71,17 +71,16 @@ export default function GraficoRegistroSocios({ active }) {
         ${active ? "" : "hidden"} `}
       style={{ minWidth: 300, minHeight: 300 }}
     >
-      <Card className="flex flex-col md:min-w-[400px] md:min-h-[400px] md:max-w-[400px]">
-        <CardHeader className="">
+      <Card className="flex flex-col md:min-w-[400px] md:min-h-[350px] md:max-w-[400px]">
+        <CardHeader className="p-4 flex items-center justify-center">
           <CardTitle className="text-xl md:text-2xl">
             Recaudación mensual
           </CardTitle>
           <CardDescription>
-            Suma de importes de cuotas sociales registradas en el año{" "}
-            {selectedYear}
+            Total de importes para el año {selectedYear}
           </CardDescription>
         </CardHeader>
-        <CardContent className="p-0 md:p-6 font-bold">
+        <CardContent className="p-0 md:p-1 font-bold">
           <ChartContainer
             className="p-0"
             config={{

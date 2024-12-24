@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -109,8 +108,8 @@ export function GraficoSociosXmes({ active }) {
       className={`flex justify-center items-center mx-auto p-4 animate-fade-left 
         ${active ? "" : "hidden"} `}
     >
-      <Card className="flex flex-col md:min-w-[400px] md:min-h-[400px]">
-        <CardHeader>
+      <Card className="flex flex-col md:min-w-[400px] md:min-h-[350px]">
+        <CardHeader className="p-4 flex items-center justify-center">
           <CardTitle>
             <div className="flex gap-1 text-xl md:text-2xl">
               <div>Socios </div>
@@ -119,7 +118,9 @@ export function GraficoSociosXmes({ active }) {
               <div className="text-green-600"> activos</div>
             </div>
           </CardTitle>
-          <CardDescription>Cantidad de socios activos por mes</CardDescription>
+          <CardDescription>
+            Cantidad de socios activos para el año {selectedYear}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfig}>
@@ -189,18 +190,6 @@ export function GraficoSociosXmes({ active }) {
             </AreaChart>
           </ChartContainer>
         </CardContent>
-        <CardFooter>
-          <div className="flex w-full items-start gap-2 text-sm">
-            <div className="grid gap-2">
-              <div className="flex items-center gap-2 font-medium leading-none">
-                Periodo{" "}
-              </div>
-              <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                Enero a Diciembre - {selectedYear}
-              </div>
-            </div>
-          </div>
-        </CardFooter>
       </Card>
     </div>
   );

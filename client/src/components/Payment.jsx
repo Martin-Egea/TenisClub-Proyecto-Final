@@ -35,8 +35,8 @@ export function Payment({ active }) {
     ${active ? "" : "hidden"} `}
     >
       <div className=" flex justify-center ">
-        <div className=" bg-white my-3 p-6 shadow-2xl rounded-lg min-w-[200px] w-full max-h-fit mr-3">
-          <h2 className="text-xl font-bold mb-6 text-center">
+        <div className=" bg-white my-3 p-5 shadow-2xl rounded-lg min-w-[200px] w-full max-h-fit mr-3">
+          <h2 className="text-2xl font-bold mb-5 text-center">
             Información de Pago
           </h2>
           <form onSubmit={onSubmit} className="space-y-1 ">

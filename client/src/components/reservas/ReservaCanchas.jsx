@@ -331,9 +331,12 @@ export function ReservaCanchas({ active, admin }) {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fade-up">
           {courts.map((court) => (
-            <Card key={court._id}>
+            <Card
+              key={court._id}
+              className="shadow-2xl bg-gradient-to-t from-gray-100 via-gray-50 to-gray-100"
+            >
               <CardHeader className="p-0">
-                <CardTitle className="text-xl font-semibold bg-zinc-200 rounded-t-lg text-center p-2">
+                <CardTitle className="text-xl font-bold rounded-t-lg text-center pt-2">
                   {court.nombre.toUpperCase()}
                 </CardTitle>
               </CardHeader>
@@ -355,7 +358,7 @@ export function ReservaCanchas({ active, admin }) {
                     const isDateValidForCancellation =
                       isDateValidForReservation;
                     const isClickable =
-                      isDateValidForReservation ||
+                      !isReserved(court._id, time) ||
                       (admin &&
                         isReserved(court._id, time) &&
                         isDateValidForCancellation);

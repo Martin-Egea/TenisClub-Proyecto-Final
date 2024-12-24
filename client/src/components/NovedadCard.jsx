@@ -59,16 +59,16 @@ export default function NovedadCard({
   return (
     <>
       <div
-        className={`flex justify-center items-center mr-3 ${
+        className={`flex justify-center items-center mr-4 ${
           active ? "" : "hidden"
         }`}
       >
         <Card
-          className="w-full max-w-sm cursor-pointer transform hover:scale-105 transition-all duration-300 hover:shadow-2xl animate-fade"
+          className="flex justify-between flex-col  max-w-[300px] max-h-[400px] min-w-[300px] min-h-[400px] mb-1 cursor-pointer transform hover:scale-105 transition-all duration-300 hover:shadow-2xl animate-fade"
           onClick={handleCardClick}
         >
-          <CardHeader>
-            <CardTitle>{titulo}</CardTitle>
+          <CardHeader className="p-3">
+            <CardTitle className="pl-3">{titulo}</CardTitle>
           </CardHeader>
           <CardContent>
             <img

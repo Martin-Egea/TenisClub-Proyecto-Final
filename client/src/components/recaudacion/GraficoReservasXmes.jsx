@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -82,12 +81,12 @@ export function GraficoReservasXmes({ active }) {
         ${active ? "" : "hidden"} `}
     >
       <Card className="flex flex-col md:min-w-[400px] md:min-h-[400px]">
-        <CardHeader>
+        <CardHeader className="p-4 flex items-center justify-center">
           <CardTitle className="text-xl md:text-2xl">
             Turnos Reservados
           </CardTitle>
           <CardDescription>
-            Cantidad de turnos reservados durante el año.
+            Total de turnos para el año {selectedYear}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -135,18 +134,6 @@ export function GraficoReservasXmes({ active }) {
             </LineChart>
           </ChartContainer>
         </CardContent>
-        <CardFooter className="flex-col items-start gap-2 text-sm">
-          <div className="flex w-full items-start gap-2 text-sm">
-            <div className="grid gap-2">
-              <div className="flex items-center gap-2 font-medium leading-none">
-                Periodo{" "}
-              </div>
-              <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                Enero a Diciembre - {selectedYear}
-              </div>
-            </div>
-          </div>
-        </CardFooter>
       </Card>
     </div>
   );
