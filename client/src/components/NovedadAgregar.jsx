@@ -64,13 +64,14 @@ export default function BarraNovedades({ active }) {
                   value={titulo}
                   onChange={(e) => setTitulo(e.target.value)}
                   placeholder="Ingrese el título"
+                  className="border border-orange-300"
                   required
                 />
               </div>
               <div className="">
                 <Label htmlFor="imagen">Imagen</Label>
                 <Input
-                  className="cursor-pointer"
+                  className="cursor-pointer border border-orange-300"
                   id="imagen"
                   type="file"
                   accept="image/*"
@@ -86,6 +87,7 @@ export default function BarraNovedades({ active }) {
                 value={descripcion}
                 onChange={(e) => setDescripcion(e.target.value)}
                 placeholder="Ingrese la descripción"
+                className="border border-orange-300"
                 required
               />
             </div>

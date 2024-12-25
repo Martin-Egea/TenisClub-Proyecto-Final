@@ -94,7 +94,7 @@ export default function MiPerfilFormulario({ active }) {
     } else {
       toast({
         title: "Error",
-        description: "Debes modificar al menos un campo!",
+        description: "No se ha modificado un campo o hay campos invalidos!",
       });
     }
   };

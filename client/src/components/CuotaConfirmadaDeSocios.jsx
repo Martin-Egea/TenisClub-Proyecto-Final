@@ -16,7 +16,9 @@ export function CuotaConfirmadaDeSocios({ active }) {
   const { cuotasSociales, user } = useUser();
 
   const cuotasRevisadas = cuotasSociales.filter(
-    (cuota) => user.id === cuota.socio._id
+    (cuota) =>
+      user.id === cuota.socio._id &&
+      cuota.mes.startsWith(new Date().getFullYear().toString())
   );
 
   // si el componente no esta activo, no mostrar nada
@@ -36,7 +38,7 @@ export function CuotaConfirmadaDeSocios({ active }) {
             <TableRow>
               <TableHead className="font-bold">Mes</TableHead>
               <TableHead className="font-bold text-center">Importe</TableHead>
-              <TableHead className="font-bold text-center">Revisado</TableHead>
+              <TableHead className="font-bold text-center">Estado</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -53,12 +55,12 @@ export function CuotaConfirmadaDeSocios({ active }) {
                   {cuota.revisado ? (
                     <div className="flex text-green-600">
                       <CheckCircle className="h-5 w-5 mr-2" />
-                      Revisado
+                      Confirmado
                     </div>
                   ) : (
                     <div className="flex text-red-600">
                       <XCircle className="h-5 w-5 mr-2" />
-                      No revisado
+                      Pendiente
                     </div>
                   )}
                 </TableCell>

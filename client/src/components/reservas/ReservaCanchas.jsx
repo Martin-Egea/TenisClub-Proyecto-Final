@@ -357,8 +357,18 @@ export function ReservaCanchas({ active, admin }) {
                       ) || isSameDay(selectedDate, new Date());
                     const isDateValidForCancellation =
                       isDateValidForReservation;
+
+                    // variables para verificar si el horario actual es pasado
+                    const now = new Date();
+                    const currentTime = now.getHours() * 60 + now.getMinutes();
+                    const [hours, minutes] = time.split(":").map(Number);
+                    const slotTime = hours * 60 + minutes;
+                    const isPastTimeSlot =
+                      isSameDay(selectedDate, now) && slotTime <= currentTime;
+
                     const isClickable =
-                      !isReserved(court._id, time) ||
+                      (!isReserved(court._id, time) &&
+                        isDateValidForReservation) ||
                       (admin &&
                         isReserved(court._id, time) &&
                         isDateValidForCancellation);
@@ -367,13 +377,13 @@ export function ReservaCanchas({ active, admin }) {
                       <Button
                         key={time}
                         onClick={() =>
-                          isClickable
+                          isClickable && !isPastTimeSlot
                             ? isReserved(court._id, time) && admin
                               ? handleAdminReservationClick(court._id, time)
                               : handleReservationClick(court._id, time)
                             : null
                         }
-                        disabled={!isClickable}
+                        disabled={!isClickable || isPastTimeSlot}
                         variant={
                           isReserved(court._id, time)
                             ? "destructive"
@@ -397,10 +407,7 @@ export function ReservaCanchas({ active, admin }) {
                   variant="default"
                   onClick={() => handleReserveAll(court._id)}
                   disabled={
-                    !isAfter(
-                      startOfDay(selectedDate),
-                      startOfDay(new Date())
-                    ) && !isSameDay(selectedDate, new Date())
+                    !isAfter(startOfDay(selectedDate), startOfDay(new Date()))
                   }
                 >
                   Reservar todos los horarios
