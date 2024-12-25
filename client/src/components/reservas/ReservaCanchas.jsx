@@ -65,7 +65,7 @@ export function ReservaCanchas({ active, admin }) {
   const {
     canchas,
     obtenerTodasLasCanchas,
-    /* obtenerTodasLasReservasDelAnio, */
+    obtenerTodasLasReservasDelAnio,
     reservas,
     crearNuevaReserva,
     eliminarUnaReserva,
@@ -246,7 +246,7 @@ export function ReservaCanchas({ active, admin }) {
 
   // Lógica para reservar todos los horarios
   const handleReserveAll = useCallback(
-    (courtId) => {
+    async (courtId) => {
       if (
         isAfter(startOfDay(selectedDate), startOfDay(new Date())) ||
         isSameDay(selectedDate, new Date())
@@ -260,14 +260,14 @@ export function ReservaCanchas({ active, admin }) {
             id_usuario: user.id,
           };
           //console.log(nuevaReserva);
-          crearNuevaReserva(nuevaReserva);
+          await crearNuevaReserva(nuevaReserva);
         }
         toast({
           title: "Todos los horarios reservados!",
           variant: "success",
         });
         // Después de reservar todos, actualizamos las reservaciones
-        /* obtenerTodasLasReservasDelAnio(selectedDate.getFullYear()); */
+        await obtenerTodasLasReservasDelAnio(selectedDate.getFullYear());
       } else {
         toast({
           title: "No se pueden reservar horarios para fechas pasadas",
@@ -276,7 +276,8 @@ export function ReservaCanchas({ active, admin }) {
       }
     },
     [
-      /* obtenerTodasLasReservasDelAnio, */ selectedDate,
+      obtenerTodasLasReservasDelAnio,
+      selectedDate,
       crearNuevaReserva,
       toast,
       user.id,
